@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { IList } from '../interfaces';
 
 interface CardProps {
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#E5E5E5',
     borderRadius: 4,
+    backgroundColor: '#FFFFFF',
   },
   title: {
     color: '#514D47',
