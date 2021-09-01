@@ -1,8 +1,11 @@
 /* eslint-disable */
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Card } from '../components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Card, Header } from '../components';
 import { IList } from '../interfaces';
+import { RootStackParamList } from '../App';
+import { PlusSvg } from '../components/svg';
 
 const lists: IList[] = [
   {
@@ -19,15 +22,20 @@ const lists: IList[] = [
   },
 ];
 
-const Desk: React.FC = () => {
+type DeskProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const Desk: React.FC<DeskProps> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <>
+      <Header title="My Desk" rightBtnIcon={<PlusSvg/>} />
+      <View style={styles.container}>
       <FlatList
         data={lists}
         renderItem={({ item }) => <Card list={item} />}
         keyExtractor={item => item.id}
       />
     </View>
+    </>
   );
 };
 
