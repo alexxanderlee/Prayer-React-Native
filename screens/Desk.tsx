@@ -2,12 +2,12 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Card, Header } from '../components';
-import { IList } from '../interfaces';
+import { ColumnItem, Header } from '../components';
+import { IColumn } from '../interfaces';
 import { RootStackParamList } from '../App';
 import { PlusSvg } from '../components/svg';
 
-const lists: IList[] = [
+const columns: IColumn[] = [
   {
     id: '0',
     title: 'To do',
@@ -30,8 +30,8 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
       <Header title="My Desk" rightBtnIcon={<PlusSvg/>} />
       <View style={styles.container}>
       <FlatList
-        data={lists}
-        renderItem={({ item }) => <Card list={item} />}
+        data={columns}
+        renderItem={({ item }) => <ColumnItem column={item} navigation={navigation} />}
         keyExtractor={item => item.id}
       />
     </View>
