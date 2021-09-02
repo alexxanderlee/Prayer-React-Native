@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { Desk, PrayersList } from './screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -15,6 +16,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const App: React.FC = () => {
   return (
     <NavigationContainer>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="Home"
