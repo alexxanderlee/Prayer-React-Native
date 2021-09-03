@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, FlatList, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { Header, PrayerItem } from '../components/';
+import { Header, PrayerItem } from '../components';
 import { SettingsSvg, PlusLgSvg } from '../components/svg';
 import { RootStackParamList } from '../App';
 import { IPrayer } from '../interfaces';
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingVertical: 15,
+    paddingVertical: 13,
     fontSize: 17,
     lineHeight: 20,
     fontWeight: '400',
