@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, SafeAreaView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ColumnItem, Header } from '../components';
 import { IColumn } from '../interfaces';

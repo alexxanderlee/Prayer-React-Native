@@ -1,51 +1,68 @@
 /* eslint-disable */
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, SafeAreaView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackArrowSvg } from './svg';
 import { AppNavParamsList } from '../navigation/types';
 
 interface HeaderProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk' | 'PrayersList'>;
-  title: string;
+  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk' | 'PrayersList' | 'PrayerDetails'>;
+  title?: string;
   rightBtnIcon?: React.ReactNode;
   onRightBtnPress?: () => void;
-  isBackBtnVisible?: boolean
+  isBackBtnVisible?: boolean;
+  backBtnColor?: string;
+  backgroundColor?: string;
+  borderShown?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ navigation, title, rightBtnIcon, onRightBtnPress, isBackBtnVisible = false }) => {
+const Header: React.FC<HeaderProps> = ({
+  navigation,
+  title,
+  rightBtnIcon,
+  onRightBtnPress,
+  isBackBtnVisible = false,
+  backBtnColor,
+  backgroundColor = '#FFFFFF',
+  borderShown = true,
+}) => {
 
   return (
-    <View style={styles.header}>
-      <View style={styles.flankItem}>
-        {isBackBtnVisible && (
-          <TouchableOpacity style={styles.btnLeft} onPress={() => navigation.goBack()}>
-            <BackArrowSvg />
-          </TouchableOpacity>
-        )}
+    <SafeAreaView style={{ ...styles.header, backgroundColor }}>
+      <View style={{ ...styles.headerContent, borderBottomWidth: borderShown ? 1 : 0 }}>
+        <View style={styles.flankItem}>
+          {isBackBtnVisible && (
+            <TouchableOpacity style={styles.btnLeft} onPress={() => navigation.goBack()}>
+              <BackArrowSvg color={backBtnColor} />
+            </TouchableOpacity>
+          )}
+        </View>
+        <View style={styles.centerItem}>
+          {title && <Text style={styles.title}>{title}</Text>}
+        </View>
+        <View style={styles.flankItem}>
+          {rightBtnIcon && (
+            <TouchableOpacity style={styles.btnRight} onPress={onRightBtnPress}>
+              {rightBtnIcon}
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
-      <View style={styles.centerItem}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-      <View style={styles.flankItem}>
-        {rightBtnIcon && (
-          <TouchableOpacity style={styles.btnRight} onPress={onRightBtnPress}>
-            {rightBtnIcon}
-          </TouchableOpacity>
-        )}
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
+    backgroundColor: '#FFFFFF',
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  headerContent: {
     height: 64,
     width: '100%',
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
-    backgroundColor: '#ffffff',
   },
   centerItem: {
     flex: 1,
@@ -78,5 +95,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
 });
+
+
 
 export default Header;

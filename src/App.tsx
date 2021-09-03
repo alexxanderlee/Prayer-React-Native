@@ -7,7 +7,7 @@ import RootNavigator from './navigation';
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
       <RootNavigator />
     </NavigationContainer>
   );

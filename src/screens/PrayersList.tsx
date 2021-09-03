@@ -49,7 +49,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, route }) => {
           <TouchableOpacity style={styles.inputBtn}>
             <PlusLgSvg />
           </TouchableOpacity>
-          <TextInput placeholder="Add a prayer..." style={styles.input} />
+          <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
         </View>
 
         <View style={styles.list}>
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
+    color: '#514D47',
     flex: 1,
     paddingVertical: 13,
     fontSize: 17,
