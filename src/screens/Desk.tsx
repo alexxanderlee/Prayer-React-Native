@@ -1,10 +1,10 @@
 /* eslint-disable */
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ColumnItem, Header } from '../components';
 import { IColumn } from '../interfaces';
-import { RootStackParamList } from '../App';
+import { AppNavParamsList } from '../navigation/types';
 import { PlusSvg } from '../components/svg';
 
 const columns: IColumn[] = [
@@ -22,12 +22,14 @@ const columns: IColumn[] = [
   },
 ];
 
-type DeskProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+interface DeskProps {
+  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk'>;
+}
 
 const Desk: React.FC<DeskProps> = ({ navigation }) => {
   return (
     <>
-      <Header title="My Desk" rightBtnIcon={<PlusSvg/>} />
+      <Header navigation={navigation} title="My Desk" rightBtnIcon={<PlusSvg/>} />
       <View style={styles.container}>
       <FlatList
         data={columns}

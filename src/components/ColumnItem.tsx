@@ -3,10 +3,10 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { IColumn } from '../interfaces';
-import { RootStackParamList } from '../App';
+import { AppNavParamsList } from '../navigation/types';
 
 interface ColumnItemProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
+  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk'>;
   column: IColumn;
 }
 

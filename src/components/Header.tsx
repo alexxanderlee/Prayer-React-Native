@@ -1,18 +1,19 @@
 /* eslint-disable */
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackArrowSvg } from './svg';
+import { AppNavParamsList } from '../navigation/types';
 
 interface HeaderProps {
+  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk' | 'PrayersList'>;
   title: string;
   rightBtnIcon?: React.ReactNode;
   onRightBtnPress?: () => void;
   isBackBtnVisible?: boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ title, rightBtnIcon, onRightBtnPress, isBackBtnVisible = false }) => {
-  const navigation = useNavigation();
+const Header: React.FC<HeaderProps> = ({ navigation, title, rightBtnIcon, onRightBtnPress, isBackBtnVisible = false }) => {
 
   return (
     <View style={styles.header}>

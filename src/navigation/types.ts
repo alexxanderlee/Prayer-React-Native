@@ -1,10 +1,11 @@
 /* eslint-disable */
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { IColumn } from '../interfaces';
+import { IColumn, IPrayer } from '../interfaces';
 
 export type AppNavParamsList = {
   Desk: undefined;
   PrayersList: { column: IColumn };
+  PrayerDetails: { prayer: IPrayer };
 };
 
 export type AuthNavParamsList = {

@@ -2,9 +2,10 @@
 import React from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, FlatList, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Header, PrayerItem } from '../components';
 import { SettingsSvg, PlusLgSvg } from '../components/svg';
-import { RootStackParamList } from '../App';
+import { AppNavParamsList } from '../navigation/types';
 import { IPrayer } from '../interfaces';
 
 const prayers: IPrayer[] = [
@@ -32,15 +33,16 @@ const prayers: IPrayer[] = [
 ];
 
 interface PrayersListProps {
-  route: RouteProp<RootStackParamList, 'PrayersList'>
+  navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
+  route: RouteProp<AppNavParamsList, 'PrayersList'>;
 }
 
-const PrayersList: React.FC<PrayersListProps> = ({ route }) => {
+const PrayersList: React.FC<PrayersListProps> = ({ navigation, route }) => {
   const { column } = route.params;
 
   return (
     <>
-      <Header title={column.title} isBackBtnVisible={true} rightBtnIcon={<SettingsSvg />} />
+      <Header navigation={navigation} title={column.title} isBackBtnVisible={true} rightBtnIcon={<SettingsSvg />} />
 
       <View style={styles.content}>
         <View style={styles.inputWrapper}>
@@ -53,7 +55,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ route }) => {
         <View style={styles.list}>
           <FlatList
             data={prayers}
-            renderItem={({ item }) => <PrayerItem prayer={item} />}
+            renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
             keyExtractor={item => item.id}
           />
         </View>

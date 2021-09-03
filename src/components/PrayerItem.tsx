@@ -1,20 +1,23 @@
 /* eslint-disable */
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { IPrayer } from '../interfaces';
 import { PrayHandsSvg, UserSvg, CheckSvg } from './svg';
+import { AppNavParamsList } from '../navigation/types';
 
 interface PrayerItemProps {
+  navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
   prayer: IPrayer;
 }
 
-const PrayerItem: React.FC<PrayerItemProps> = ({ prayer }) => {
+const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
   const [membersCount, setMembersCount] = React.useState<number>(0);
   const [praysCount, setPraysCount] = React.useState<number>(0);
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
 
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('PrayerDetails', { prayer })}>
       <View style={styles.indicator}></View>
 
       <TouchableOpacity style={styles.checkbox} onPress={() => setIsChecked(!isChecked)}>
