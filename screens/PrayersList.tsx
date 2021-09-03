@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet, FlatList } from 'react-native';
+import { View, TouchableOpacity, TextInput, StyleSheet, FlatList, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { Header, PrayerItem } from '../components/';
 import { SettingsSvg, PlusLgSvg } from '../components/svg';
@@ -57,6 +57,12 @@ const PrayersList: React.FC<PrayersListProps> = ({ route }) => {
             keyExtractor={item => item.id}
           />
         </View>
+
+        <View style={styles.buttonWrapper}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Show answered prayers</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -90,7 +96,30 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: 15,
-  }
+    marginBottom: 20,
+  },
+  buttonWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  button: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    backgroundColor: '#BFB393',
+    borderRadius: 15,
+    shadowColor: '#424e75',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 15,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    textTransform: 'uppercase',
+    fontSize: 12,
+    fontWeight: '700',
+    lineHeight: 14,
+  },
 });
 
 export default PrayersList;
