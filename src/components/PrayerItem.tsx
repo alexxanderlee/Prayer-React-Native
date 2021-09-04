@@ -15,17 +15,6 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
   const [membersCount, setMembersCount] = React.useState<number>(0);
   const [praysCount, setPraysCount] = React.useState<number>(0);
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
-  const [title, setTitle] = React.useState<string>(prayer.title);
-
-  function handleTextLayout(event: LayoutChangeEvent) {
-    const elemWidth = Math.floor(event.nativeEvent.layout.width);
-    const charsCount = Math.floor(elemWidth / 9);
-    if (title.length > charsCount) {
-      const shortTitle = title.slice(0, charsCount).concat('...');
-      setTitle(shortTitle);
-    }
-  }
-
 
   return (
     <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('PrayerDetails', { prayer })}>
@@ -38,9 +27,9 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
       </TouchableOpacity>
 
       <Text
-        onLayout={handleTextLayout}
+        numberOfLines={1}
         style={{ ...styles.title, textDecorationLine: isChecked ? 'line-through' : 'none' }}
-      >{title}</Text>
+      >{prayer.title}</Text>
 
       <TouchableOpacity style={styles.btn} onPress={() => setMembersCount(membersCount + 1)}>
         <UserSvg />
