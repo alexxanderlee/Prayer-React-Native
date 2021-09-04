@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, LayoutChangeEvent } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { IPrayer } from '../interfaces';
 import { PrayHandsSvg, UserSvg, CheckSvg } from './svg';
@@ -15,6 +15,17 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
   const [membersCount, setMembersCount] = React.useState<number>(0);
   const [praysCount, setPraysCount] = React.useState<number>(0);
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
+  const [title, setTitle] = React.useState<string>(prayer.title);
+
+  function handleTextLayout(event: LayoutChangeEvent) {
+    const elemWidth = Math.floor(event.nativeEvent.layout.width);
+    const charsCount = Math.floor(elemWidth / 9);
+    if (title.length > charsCount) {
+      const shortTitle = title.slice(0, charsCount).concat('...');
+      setTitle(shortTitle);
+    }
+  }
+
 
   return (
     <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('PrayerDetails', { prayer })}>
@@ -26,7 +37,10 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
         </View>
       </TouchableOpacity>
 
-      <Text style={{ ...styles.title, textDecorationLine: isChecked ? 'line-through' : 'none' }}>{prayer.title}</Text>
+      <Text
+        onLayout={handleTextLayout}
+        style={{ ...styles.title, textDecorationLine: isChecked ? 'line-through' : 'none' }}
+      >{title}</Text>
 
       <TouchableOpacity style={styles.btn} onPress={() => setMembersCount(membersCount + 1)}>
         <UserSvg />
