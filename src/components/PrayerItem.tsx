@@ -26,7 +26,7 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
         </View>
       </TouchableOpacity>
 
-      <Text style={styles.title}>{prayer.title}</Text>
+      <Text style={{ ...styles.title, textDecorationLine: isChecked ? 'line-through' : 'none' }}>{prayer.title}</Text>
 
       <TouchableOpacity style={styles.btn} onPress={() => setMembersCount(membersCount + 1)}>
         <UserSvg />

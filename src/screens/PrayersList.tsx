@@ -26,7 +26,7 @@ const prayers: IPrayer[] = [
   {
     id: '2',
     columnId: '0',
-    title: 'Prayer item',
+    title: 'Prayer item two which is for my family to love God whole heartedly.',
     descr: '',
     checked: false,
   },
