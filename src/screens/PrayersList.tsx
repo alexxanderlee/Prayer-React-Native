@@ -42,29 +42,35 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, route }) => {
 
   return (
     <>
-      <Header navigation={navigation} title={column.title} isBackBtnVisible={true} rightBtnIcon={<SettingsSvg />} />
+      <Header
+        navigation={navigation}
+        title={column.title}
+        isBackBtnVisible={true}
+        rightBtnIcon={<SettingsSvg />}
+      />
 
       <View style={styles.content}>
-        <View style={styles.inputWrapper}>
-          <TouchableOpacity style={styles.inputBtn}>
-            <PlusLgSvg />
-          </TouchableOpacity>
-          <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
-        </View>
-
-        <View style={styles.list}>
-          <FlatList
-            data={prayers}
-            renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
-            keyExtractor={item => item.id.toString()}
-          />
-        </View>
-
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Show answered prayers</Text>
-          </TouchableOpacity>
-        </View>
+        <FlatList
+          ListHeaderComponent={(
+            <View style={styles.inputWrapper}>
+              <TouchableOpacity style={styles.inputBtn}>
+                <PlusLgSvg />
+              </TouchableOpacity>
+              <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
+            </View>
+          )}
+          contentContainerStyle={{ padding: 15, paddingBottom: 30 }}
+          data={prayers}
+          renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+          keyExtractor={item => item.id.toString()}
+          ListFooterComponent={(
+            <View style={styles.buttonWrapper}>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>Show answered prayers</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
       </View>
     </>
   );
@@ -73,10 +79,10 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    padding: 15,
     backgroundColor: '#FFFFFF',
   },
   inputWrapper: {
+    marginBottom: 15,
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: '#FFFFFF',
@@ -97,15 +103,12 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: '400',
   },
-  list: {
-    marginTop: 15,
-    marginBottom: 20,
-  },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
   },
   button: {
+    marginTop: 20,
     paddingHorizontal: 20,
     paddingVertical: 8,
     backgroundColor: '#BFB393',

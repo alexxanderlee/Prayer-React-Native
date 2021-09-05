@@ -35,6 +35,7 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
       <Header navigation={navigation} title="My Desk" rightBtnIcon={<PlusSvg/>} />
       <View style={styles.container}>
       <FlatList
+        contentContainerStyle={{ padding: 15, }}
         data={columns}
         renderItem={({ item }) => <ColumnItem column={item} navigation={navigation} />}
         keyExtractor={item => item.id.toString()}
@@ -47,7 +48,6 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
     backgroundColor: '#FFFFFF',
   },
 });
