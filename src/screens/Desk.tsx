@@ -9,16 +9,19 @@ import { PlusSvg } from '../components/svg';
 
 const columns: IColumn[] = [
   {
-    id: '0',
+    id: 0,
     title: 'To do',
+    description: '',
   },
   {
-    id: '1',
+    id: 1,
     title: 'In progress',
+    description: '',
   },
   {
-    id: '2',
+    id: 2,
     title: 'Completed',
+    description: '',
   },
 ];
 
@@ -34,7 +37,7 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
       <FlatList
         data={columns}
         renderItem={({ item }) => <ColumnItem column={item} navigation={navigation} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
       />
     </View>
     </>

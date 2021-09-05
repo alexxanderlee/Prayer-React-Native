@@ -10,24 +10,24 @@ import { IPrayer } from '../interfaces';
 
 const prayers: IPrayer[] = [
   {
-    id: '0',
-    columnId: '1',
+    id: 0,
+    columnId: 1,
     title: 'Prayer item one',
-    descr: '',
+    description: '',
     checked: false,
   },
   {
-    id: '1',
-    columnId: '1',
+    id: 1,
+    columnId: 1,
     title: 'Prayer item two',
-    descr: '',
+    description: '',
     checked: false,
   },
   {
-    id: '2',
-    columnId: '0',
+    id: 2,
+    columnId: 0,
     title: 'Prayer item two which is for my family to love God whole heartedly.',
-    descr: '',
+    description: '',
     checked: false,
   },
 ];
@@ -56,7 +56,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, route }) => {
           <FlatList
             data={prayers}
             renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.id.toString()}
           />
         </View>
 

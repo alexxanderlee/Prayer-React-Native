@@ -4,8 +4,9 @@ import { Text, View, StyleSheet, StatusBar, FlatList, Image, TouchableOpacity } 
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppNavParamsList } from '../navigation/types';
-import { Header } from '../components';
-import { PrayHandsSvg, PlusSvg, PlusLgSvg } from '../components/svg';
+import { Header, CommentItem } from '../components';
+import { PrayHandsSvg, PlusLgSvg } from '../components/svg';
+import { IComment } from '../interfaces';
 
 interface PrayerDetailsProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayerDetails'>;
@@ -27,6 +28,33 @@ const members = [
   },
 ];
 
+const comments: IComment[] = [
+  {
+    id: 0,
+    author: 'Anna Barber',
+    avatar: require('../assets/images/avatar1.jpg'),
+    text: 'Hey, hey!',
+    created: '2021-09-05T04:56:11.160Z',
+    prayerId: 0,
+  },
+  {
+    id: 1,
+    author: 'Hanna Barber',
+    avatar: require('../assets/images/avatar2.jpg'),
+    text: 'Hi!',
+    created: '2021-09-05T04:56:11.160Z',
+    prayerId: 0,
+  },
+  {
+    id: 2,
+    author: 'Gloria Barber',
+    avatar: require('../assets/images/avatar3.jpg'),
+    text: 'How you doing?',
+    created: '2021-09-05T04:56:11.160Z',
+    prayerId: 0,
+  },
+];
+
 const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation, route }) => {
   const { prayer } = route.params;
 
@@ -43,18 +71,20 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
       />
       <View style={styles.container}>
         <View style={styles.titleWrapper}>
-          <Text style={styles.title}>{prayer.title}</Text>
+          <Text style={styles.title}>
+            {prayer.title}
+          </Text>
         </View>
 
         <View style={styles.lastPrayed}>
-          <View style={styles.indicator}></View>
+          <View style={styles.lastPrayedIndicator}></View>
           <Text style={styles.lastPrayedTitle}>
             Last prayed 8 min ago
           </Text>
         </View>
 
         <View style={styles.infoRow}>
-          <View style={{ ...styles.infoItem, paddingBottom: 0 }}>
+          <View style={{ ...styles.infoCol, paddingBottom: 0 }}>
             <Text style={{ ...styles.infoDate } }>
               July 25 2017
             </Text>
@@ -65,7 +95,7 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
               Opened for 4 days
             </Text>
           </View>
-          <View style={{ ...styles.infoItem, borderRightWidth: 0 }}>
+          <View style={{ ...styles.infoCol, borderRightWidth: 0 }}>
             <Text style={styles.infoTitle}>
               123
             </Text>
@@ -75,7 +105,7 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
           </View>
         </View>
         <View style={styles.infoRow}>
-          <View style={styles.infoItem}>
+          <View style={styles.infoCol}>
             <Text style={styles.infoTitle}>
               63
             </Text>
@@ -83,7 +113,7 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
               Times Prayed by Me
             </Text>
           </View>
-          <View style={{ ...styles.infoItem, borderRightWidth: 0 }}>
+          <View style={{ ...styles.infoCol, borderRightWidth: 0 }}>
             <Text style={styles.infoTitle}>
               60
             </Text>
@@ -93,9 +123,10 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
           </View>
         </View>
 
-        <View style={styles.membersList}>
+        <View>
           <Text style={styles.sectionTitle}>Members</Text>
           <FlatList
+            contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 10 }}
             data={members}
             horizontal={true}
             renderItem={({ item }) => (
@@ -109,7 +140,17 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
             )}
           />
         </View>
+
+        <View>
+          <Text style={styles.sectionTitle}>Comments</Text>
+          <FlatList
+            contentContainerStyle={{ borderTopWidth: 1, borderTopColor: '#E5E5E5' }}
+            data={comments}
+            renderItem={({ item }) => <CommentItem comment={item} />}
+            keyExtractor={item => item.id.toString()}
+          />
         </View>
+      </View>
     </>
   );
 };
@@ -143,7 +184,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#514D47',
   },
-  indicator: {
+  lastPrayedIndicator: {
     marginRight: 10,
     width: 3,
     height: 22,
@@ -153,7 +194,7 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
   },
-  infoItem: {
+  infoCol: {
     flex: 1,
     paddingVertical: 26,
     paddingHorizontal: 15,
@@ -182,6 +223,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   sectionTitle: {
+    paddingHorizontal: 15,
     paddingBottom: 15,
     paddingTop: 20,
     color: '#72A8BC',
@@ -189,10 +231,6 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     fontWeight: '600',
     textTransform: 'uppercase',
-  },
-  membersList: {
-    paddingHorizontal: 15,
-    paddingBottom: 10,
   },
   membersAvatar: {
     marginRight: 7,
@@ -207,7 +245,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 export default PrayerDetails;
