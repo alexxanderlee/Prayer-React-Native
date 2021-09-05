@@ -31,8 +31,8 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
 const styles = StyleSheet.create({
   comment: {
     padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5E5',
     flexDirection: 'row',
   },
   avatar: {
