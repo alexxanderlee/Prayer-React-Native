@@ -1,11 +1,11 @@
 /* eslint-disable */
 import React from 'react';
-import { Text, View, SectionList, StyleSheet, StatusBar, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Text, View, SectionList, StyleSheet, StatusBar, FlatList, Image, TouchableOpacity, TextInput } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppNavParamsList } from '../navigation/types';
 import { Header, CommentItem } from '../components';
-import { PrayHandsSvg, PlusLgSvg } from '../components/svg';
+import { PrayHandsSvg, PlusLgSvg, CommentIconSvg } from '../components/svg';
 import { IComment, IPrayer } from '../interfaces';
 
 interface PrayerDetailsProps {
@@ -171,6 +171,17 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
         ]}
         renderSectionHeader={({ section: { title } }) => <Text style={styles.sectionTitle}>{title}</Text>}
       />
+      <View style={styles.addComment}>
+        <TouchableOpacity style={styles.addCommentBtn}>
+          <CommentIconSvg />
+        </TouchableOpacity>
+        <TextInput
+          style={styles.addCommentInput}
+          placeholder="Add a comment..."
+          placeholderTextColor="#9C9C9C"
+          multiline={true}
+        />
+      </View>
     </View>
   );
 };
@@ -264,6 +275,25 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addComment: {
+    paddingVertical: 5,
+    borderTopColor: '#E5E5E5',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  addCommentInput: {
+    color: '#514D47',
+    fontSize: 17,
+    lineHeight: 20,
+    fontWeight: '400',
+  },
+  addCommentBtn: {
+    height: 50,
+    width: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
