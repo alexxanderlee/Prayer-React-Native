@@ -7,17 +7,11 @@ import { AppNavigator, AuthNavigator } from './navigators';
 const Stack = createNativeStackNavigator<RootNavParamsList>();
 
 const RootNavigator: React.FC = () => {
+  const [isSignedIn, setIsSignedIn] = React.useState<boolean>(false);
   return (
-    <Stack.Navigator initialRouteName="App" screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="App"
-        component={AppNavigator}
-      />
-      <Stack.Screen
-        name="Auth"
-        component={AuthNavigator}
-      />
-    </Stack.Navigator>
+    isSignedIn
+      ? <AppNavigator />
+      : <AuthNavigator setIsSignedIn={setIsSignedIn} />
   );
 };
 
