@@ -3,8 +3,8 @@ import React from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, FlatList, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header, PrayerItem } from '../components';
-import { SettingsSvg, PlusLgSvg } from '../components/svg';
+import { PrayerItem } from '../components';
+import { PlusLgSvg } from '../components/svg';
 import { AppNavParamsList } from '../navigation/types';
 import { IPrayer } from '../interfaces';
 
@@ -38,16 +38,15 @@ interface PrayersListProps {
 }
 
 const PrayersList: React.FC<PrayersListProps> = ({ navigation, route }) => {
-  const { column } = route.params;
 
   return (
     <>
-      <Header
+      {/* <Header
         navigation={navigation}
         title={column.title}
         isBackBtnVisible={true}
         rightBtnIcon={<SettingsSvg />}
-      />
+      /> */}
 
       <View style={styles.content}>
         <FlatList

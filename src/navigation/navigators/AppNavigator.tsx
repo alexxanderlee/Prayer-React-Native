@@ -3,6 +3,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Desk, PrayersList, PrayerDetails } from '../../screens';
 import { AppNavParamsList } from '../types';
+import { PrayersListNavigator } from '../navigators';
 
 const Stack = createNativeStackNavigator<AppNavParamsList>();
 
@@ -15,7 +16,7 @@ const AppNavigator: React.FC = () => {
       />
       <Stack.Screen
         name="PrayersList"
-        component={PrayersList}
+        component={PrayersListNavigator}
       />
       <Stack.Screen
         name="PrayerDetails"

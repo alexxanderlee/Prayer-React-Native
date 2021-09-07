@@ -2,6 +2,11 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { IColumn, IPrayer } from '../interfaces';
 
+export type RootNavParamsList = {
+  Auth: NavigatorScreenParams<AuthNavParamsList>;
+  App: NavigatorScreenParams<AppNavParamsList>;
+};
+
 export type AppNavParamsList = {
   Desk: undefined;
   PrayersList: { column: IColumn };
@@ -13,7 +18,7 @@ export type AuthNavParamsList = {
   Signup: undefined;
 };
 
-export type RootNavParamsList = {
-  Auth: NavigatorScreenParams<AuthNavParamsList>;
-  App: NavigatorScreenParams<AppNavParamsList>;
-};
+export type PrayersListNavParamsList = {
+  MyPrayers: undefined;
+  Subscribed: undefined;
+}
