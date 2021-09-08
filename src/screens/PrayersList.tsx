@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, FlatList, Text } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PrayerItem } from '../components';
 import { PlusLgSvg } from '../components/svg';
@@ -34,44 +33,33 @@ const prayers: IPrayer[] = [
 
 interface PrayersListProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
-  route: RouteProp<AppNavParamsList, 'PrayersList'>;
 }
 
-const PrayersList: React.FC<PrayersListProps> = ({ navigation, route }) => {
-
+const PrayersList: React.FC<PrayersListProps> = ({ navigation }) => {
   return (
-    <>
-      {/* <Header
-        navigation={navigation}
-        title={column.title}
-        isBackBtnVisible={true}
-        rightBtnIcon={<SettingsSvg />}
-      /> */}
-
-      <View style={styles.content}>
-        <FlatList
-          ListHeaderComponent={(
-            <View style={styles.inputWrapper}>
-              <TouchableOpacity style={styles.inputBtn}>
-                <PlusLgSvg />
-              </TouchableOpacity>
-              <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
-            </View>
-          )}
-          contentContainerStyle={{ padding: 15, paddingBottom: 30 }}
-          data={prayers}
-          renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
-          keyExtractor={item => item.id.toString()}
-          ListFooterComponent={(
-            <View style={styles.buttonWrapper}>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Show answered prayers</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-      </View>
-    </>
+    <View style={styles.content}>
+      <FlatList
+        ListHeaderComponent={(
+          <View style={styles.inputWrapper}>
+            <TouchableOpacity style={styles.inputBtn}>
+              <PlusLgSvg />
+            </TouchableOpacity>
+            <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
+          </View>
+        )}
+        contentContainerStyle={{ padding: 15, paddingBottom: 30 }}
+        data={prayers}
+        renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+        keyExtractor={item => item.id.toString()}
+        ListFooterComponent={(
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>Show answered prayers</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </View>
   );
 };
 

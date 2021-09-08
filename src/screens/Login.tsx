@@ -9,14 +9,14 @@ interface LoginProps {
   setIsSignedIn: (value: boolean) => void;
 }
 
-const Login: React.FunctionComponent<LoginProps> = ({ navigation, setIsSignedIn }) => {
+const Login: React.FC<LoginProps> = ({ navigation, setIsSignedIn }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <Text style={styles.title}>Sign In</Text>
+        <Text style={styles.title}>Log In</Text>
         <Text style={styles.text}>Welcome to Prayer</Text>
         <TextInput style={styles.input} placeholder="Email" placeholderTextColor="#b3b3b3" />
-        <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#b3b3b3" />
+        <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#b3b3b3" secureTextEntry />
         <TouchableOpacity style={styles.btn} onPress={() => setIsSignedIn(true)}>
           <Text style={styles.btnText}>Login</Text>
         </TouchableOpacity>

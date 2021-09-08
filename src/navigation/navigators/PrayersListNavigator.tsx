@@ -7,6 +7,7 @@ import { AppNavParamsList, PrayersListNavParamsList } from '../types';
 import { PrayersList } from '../../screens';
 import { Header } from '../../components';
 import { SettingsSvg } from '../../components/svg';
+import TabBar from '../../components/TabBar';
 
 interface Props {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
@@ -31,10 +32,12 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
         <Tab.Screen
           name="MyPrayers"
           component={PrayersList}
+          options={{ title: 'My Prayers' }}
         />
         <Tab.Screen
           name="Subscribed"
           component={PrayersList}
+          options={{ title: 'Subscribed' }}
         />
       </Tab.Navigator>
     </>
