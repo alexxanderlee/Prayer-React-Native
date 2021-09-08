@@ -12,7 +12,7 @@ interface SignupProps {
 const Signup: React.FC<SignupProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <BackArrowSvg color={'#514D47'} />
         </TouchableOpacity>
@@ -43,6 +43,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  header: {
+    alignItems: 'flex-start',
   },
   backBtn: {
     padding: 20,

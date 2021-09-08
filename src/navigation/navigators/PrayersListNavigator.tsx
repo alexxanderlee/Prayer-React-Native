@@ -4,10 +4,9 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { AppNavParamsList, PrayersListNavParamsList } from '../types';
-import { PrayersList } from '../../screens';
+import { PrayersList, SubscribedPrayersList } from '../../screens';
 import { Header } from '../../components';
 import { SettingsSvg } from '../../components/svg';
-import TabBar from '../../components/TabBar';
 
 interface Props {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
@@ -28,7 +27,19 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
         rightBtnIcon={<SettingsSvg />}
         borderShown={false}
       />
-      <Tab.Navigator initialRouteName="MyPrayers">
+      <Tab.Navigator
+        initialRouteName="MyPrayers"
+        screenOptions={{
+          tabBarActiveTintColor: '#72A8BC',
+          tabBarInactiveTintColor: '#C8C8C8',
+          tabBarIndicatorStyle: { backgroundColor: '#72A8BC' },
+          tabBarLabelStyle: {
+            fontSize: 13,
+            fontWeight: '600',
+            lineHeight: 16,
+          },
+        }}
+      >
         <Tab.Screen
           name="MyPrayers"
           component={PrayersList}
@@ -36,7 +47,7 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
         />
         <Tab.Screen
           name="Subscribed"
-          component={PrayersList}
+          component={SubscribedPrayersList}
           options={{ title: 'Subscribed' }}
         />
       </Tab.Navigator>
