@@ -11,6 +11,7 @@ export type AppNavParamsList = {
   Desk: undefined;
   PrayersList: { column: IColumn };
   PrayerDetails: { prayer: IPrayer };
+  UserModal: undefined;
 };
 
 export type AuthNavParamsList = {

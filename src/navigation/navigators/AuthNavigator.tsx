@@ -12,7 +12,13 @@ const Stack = createNativeStackNavigator<AuthNavParamsList>();
 
 const AuthNavigator: React.FC<Props> = ({ setIsSignedIn }) => {
   return (
-    <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+      }}
+    >
       <Stack.Screen name="Login">
         {props => <Login {...props} setIsSignedIn={setIsSignedIn} />}
       </Stack.Screen>

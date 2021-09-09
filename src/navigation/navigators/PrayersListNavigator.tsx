@@ -25,6 +25,7 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
         title={column.title}
         isBackBtnVisible={true}
         rightBtnIcon={<SettingsSvg />}
+        onRightBtnPress={() => navigation.navigate('UserModal')}
         borderShown={false}
       />
       <Tab.Navigator
