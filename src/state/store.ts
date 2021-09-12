@@ -13,6 +13,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import createSagaMiddleware from 'redux-saga';
 import { userReducer } from './features';
+import rootSaga from './rootSaga';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -34,6 +35,8 @@ const store = configureStore({
     },
    }).concat(sagaMiddleware),
 });
+
+sagaMiddleware.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
