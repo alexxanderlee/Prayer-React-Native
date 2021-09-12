@@ -9,7 +9,7 @@ function* loginUserWorker(action: PayloadAction<LoginUserPayload>) {
   try {
     const { data }: AxiosResponse = yield call(userApi.login, action.payload);
     const payload = {
-      user: {
+      userData: {
         id: data.id,
         name: data.name,
         email: data.email,
@@ -28,7 +28,7 @@ function* signupUserWorker(action: PayloadAction<SignupUserPayload>) {
   try {
     const { data }: AxiosResponse = yield call(userApi.signup, action.payload);
     const payload = {
-      user: {
+      userData: {
         id: data.id,
         name: data.name,
         email: data.email,

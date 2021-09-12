@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { SafeAreaView, View, ScrollView, Text, TextInput, StyleSheet, Platform, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { SafeAreaView, View, Text, TextInput, StyleSheet, Platform, StatusBar, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthNavParamsList } from '../navigation/types';
 import { BackArrowSvg } from '../components/svg';
@@ -25,7 +25,7 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
         <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#b3b3b3" secureTextEntry />
         <TextInput style={styles.input} placeholder="Confirm password" placeholderTextColor="#b3b3b3" secureTextEntry />
         <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnText}>Login</Text>
+          <Text style={styles.btnText}>Sign Up</Text>
         </TouchableOpacity>
         <View style={styles.login}>
           <Text style={styles.loginText}>Already have an account?</Text>
