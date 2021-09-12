@@ -3,12 +3,16 @@ import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Platform, StatusBar, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppNavParamsList } from '../navigation/types';
+import { useAppDispatch } from '../state/hooks';
+import { userActions } from '../state/features/user';
 
 interface UserModalProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'UserModal'>;
 }
 
 const UserModal: React.FC<UserModalProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigation.pop()}>
@@ -18,7 +22,7 @@ const UserModal: React.FC<UserModalProps> = ({ navigation }) => {
         <Image style={styles.avatar} source={require('../assets/images/noavatar.png')} />
         <Text style={styles.nameString}>User Name</Text>
         <Text style={styles.emailString}>email@domain.com</Text>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={() => dispatch(userActions.logoutUser())}>
           <Text style={styles.btnText}>Log Out</Text>
         </TouchableOpacity>
       </View>

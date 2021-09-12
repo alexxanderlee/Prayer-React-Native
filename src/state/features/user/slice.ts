@@ -25,7 +25,9 @@ export const userSlice = createSlice({
       state.error = null;
     },
     logoutUser: (state) => {
-      state = initialState;
+      state.userData = null;
+      state.token = null;
+      state.error = null;
     },
     setError: (state, action) => {
       state.error = action.payload;

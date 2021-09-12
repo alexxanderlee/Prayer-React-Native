@@ -2,24 +2,74 @@
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
+import { Form, Field } from 'react-final-form';
 import { AuthNavParamsList } from '../navigation/types';
+import { useAppDispatch } from '../state/hooks';
+import { userActions } from '../state/features/user';
+
+interface FormValues {
+  email: string,
+  password: string,
+}
 
 interface LoginProps {
   navigation: NativeStackNavigationProp<AuthNavParamsList, 'Login'>;
-  setIsSignedIn: (value: boolean) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ navigation, setIsSignedIn }) => {
+const Login: React.FC<LoginProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+
+  function onSubmit(values: FormValues) {
+    dispatch(userActions.loginUser(values));
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.text}>Welcome to Prayer</Text>
-        <TextInput style={styles.input} placeholder="Email" placeholderTextColor="#b3b3b3" />
-        <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#b3b3b3" secureTextEntry />
-        <TouchableOpacity style={styles.btn} onPress={() => setIsSignedIn(true)}>
-          <Text style={styles.btnText}>Login</Text>
-        </TouchableOpacity>
+        <Form
+          onSubmit={onSubmit}
+          render={({ handleSubmit }) => (
+            <>
+              <Field
+                name="email"
+                placeholder="Email"
+                placeholderTextColor="#b3b3b3"
+                style={styles.input}
+                render={({ input, meta, style, placeholder, placeholderTextColor }) => (
+                  <TextInput
+                    value={input.value}
+                    onChangeText={input.onChange}
+                    style={style}
+                    placeholder={placeholder} 
+                    placeholderTextColor={placeholderTextColor}
+                  />
+                )}
+              />
+              <Field
+                name="password"
+                placeholder="Password"
+                placeholderTextColor="#b3b3b3"
+                secureTextEntry={true}
+                style={styles.input}
+                render={({ input, meta, style, placeholder, placeholderTextColor, secureTextEntry }) => (
+                  <TextInput
+                    value={input.value}
+                    onChangeText={input.onChange}
+                    style={style}
+                    placeholder={placeholder} 
+                    placeholderTextColor={placeholderTextColor}
+                    secureTextEntry={secureTextEntry}
+                  />
+                )}
+              />
+              <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+                <Text style={styles.btnText}>Login</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        />
         <View style={styles.signup}>
           <Text style={styles.signupText}>Don't have an account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>

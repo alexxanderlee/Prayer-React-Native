@@ -1,13 +1,16 @@
 /* eslint-disable */
 import React from 'react';
 import { AppNavigator, AuthNavigator } from './navigators';
+import { userSelectors } from '../state/features/user';
+import { useAppSelector } from '../state/hooks';
 
 const RootNavigator: React.FC = () => {
-  const [isSignedIn, setIsSignedIn] = React.useState<boolean>(false);
+  const token = useAppSelector(userSelectors.getToken);
+
   return (
-    isSignedIn
+    token
       ? <AppNavigator />
-      : <AuthNavigator setIsSignedIn={setIsSignedIn} />
+      : <AuthNavigator />
   );
 };
 
