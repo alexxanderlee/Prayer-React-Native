@@ -6,6 +6,7 @@ import { Form, Field } from 'react-final-form';
 import { AuthNavParamsList } from '../navigation/types';
 import { useAppDispatch } from '../state/hooks';
 import { userActions } from '../state/features/user';
+import { InputField } from '../components/UI';
 
 interface FormValues {
   email: string,
@@ -36,33 +37,13 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                 name="email"
                 placeholder="Email"
                 placeholderTextColor="#b3b3b3"
-                style={styles.input}
-                render={({ input, meta, style, placeholder, placeholderTextColor }) => (
-                  <TextInput
-                    value={input.value}
-                    onChangeText={input.onChange}
-                    style={style}
-                    placeholder={placeholder} 
-                    placeholderTextColor={placeholderTextColor}
-                  />
-                )}
+                component={InputField}
               />
               <Field
                 name="password"
                 placeholder="Password"
-                placeholderTextColor="#b3b3b3"
                 secureTextEntry={true}
-                style={styles.input}
-                render={({ input, meta, style, placeholder, placeholderTextColor, secureTextEntry }) => (
-                  <TextInput
-                    value={input.value}
-                    onChangeText={input.onChange}
-                    style={style}
-                    placeholder={placeholder} 
-                    placeholderTextColor={placeholderTextColor}
-                    secureTextEntry={secureTextEntry}
-                  />
-                )}
+                component={InputField}
               />
               <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
                 <Text style={styles.btnText}>Login</Text>
@@ -109,18 +90,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.6,
     textAlign: 'center',
-  },
-  input: {
-    marginBottom: 15,
-    backgroundColor: '#f2f2f2',
-    paddingVertical: 9,
-    paddingHorizontal: 20,
-    borderRadius: 40,
-    color: '#514D47',
-    fontSize: 17,
-    lineHeight: 20,
-    fontWeight: '400',
-    letterSpacing: 0.4,
   },
   btn: {
     paddingVertical: 13,
