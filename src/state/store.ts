@@ -15,14 +15,21 @@ import createSagaMiddleware from 'redux-saga';
 import { userReducer } from './features';
 import rootSaga from './rootSaga';
 
-const rootReducer = combineReducers({
-  user: userReducer,
-});
-
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['user'],
 };
+
+const userConfig = {
+  key: 'user',
+  storage: AsyncStorage,
+  blacklist: ['error', 'loading'],
+};
+
+const rootReducer = combineReducers({
+  user: persistReducer(userConfig, userReducer),
+});
 
 const sagaMiddleware = createSagaMiddleware();
 

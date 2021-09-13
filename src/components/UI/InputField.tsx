@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { TextInput, StyleSheet, ViewStyle } from 'react-native';
+import { TextInput, Text, StyleSheet, ViewStyle } from 'react-native';
 import { FieldRenderProps } from 'react-final-form';
 
 interface InputFiledProps extends FieldRenderProps<string> {
@@ -8,6 +8,7 @@ interface InputFiledProps extends FieldRenderProps<string> {
   placeholderTextColor?: string;
   secureTextEntry?: boolean;
   style?: ViewStyle;
+  showErrorText?: boolean;
 }
 
 const InputFiled: React.FC<InputFiledProps> = ({
@@ -17,17 +18,28 @@ const InputFiled: React.FC<InputFiledProps> = ({
   placeholder,
   placeholderTextColor = '#b3b3b3',
   secureTextEntry = false,
+  showErrorText = true,
 }) => {
-  
+  const style = (meta.error && meta.touched)
+    ? [styles.input, customStyle, { borderColor: '#e09898', borderWidth: 1 }]
+    : [styles.input, customStyle];
+
   return (
-    <TextInput
-      value={input.value}
-      onChangeText={input.onChange}
-      style={[styles.input, customStyle]}
-      placeholder={placeholder} 
-      placeholderTextColor={placeholderTextColor}
-      secureTextEntry={secureTextEntry}
-    />
+    <>
+      {showErrorText && meta.error && meta.touched && (
+        <Text style={styles.errorText}>
+          {meta.error}
+        </Text>
+      )}
+      <TextInput
+        value={input.value}
+        onChangeText={input.onChange}
+        style={style}
+        placeholder={placeholder} 
+        placeholderTextColor={placeholderTextColor}
+        secureTextEntry={secureTextEntry}
+      />
+    </>
   );
 };
 
@@ -43,6 +55,16 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: '400',
     letterSpacing: 0.4,
+    borderWidth: 1,
+    borderColor: '#f2f2f2',
+  },
+  errorText: {
+    marginLeft: 20,
+    marginBottom: 3,
+    color: '#db4848',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 14,
   },
 });
 

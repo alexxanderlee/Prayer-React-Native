@@ -21,14 +21,10 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(userSelectors.isLoading);
-  const error = useAppSelector(userSelectors.getError)
+  const error = useAppSelector(userSelectors.getError);
 
   function onSubmit(values: FormValues) {
     dispatch(userActions.loginUser(values));
-  }
-
-  if (error) {
-    return <View><Text>{JSON.stringify(error)}</Text></View>;
   }
 
   return (
@@ -36,17 +32,25 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       <View style={styles.wrapper}>
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.text}>Welcome to Prayer</Text>
+
+        {error ? (
+          <View style={styles.error}>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
+        ) : null}
+
         {isLoading ? (
           <ActivityIndicator  color="#72A8BC" size="large" />
         ) : (
           <>
             <Form
               onSubmit={onSubmit}
-              render={({ handleSubmit, submitting, pristine }) => (
+              render={({ handleSubmit }) => (
                 <>
                   <Field
                     name="email"
                     placeholder="Email"
+                    showErrorText={false}
                     validate={validators.required}
                     component={InputField}
                   />
@@ -54,10 +58,11 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                     name="password"
                     placeholder="Password"
                     secureTextEntry={true}
+                    showErrorText={false}
                     validate={validators.required}
                     component={InputField}
                   />
-                  <TouchableOpacity style={styles.btn} onPress={handleSubmit} disabled={submitting || pristine}>
+                  <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
                     <Text style={styles.btnText}>Login</Text>
                   </TouchableOpacity>
                 </>
@@ -97,13 +102,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   text: {
-    marginBottom: 40,
+    marginBottom: 25,
     color: '#a0a0a0',
     fontSize: 16,
     lineHeight: 18,
     fontWeight: '700',
     letterSpacing: 0.6,
     textAlign: 'center',
+  },
+  error: {
+    marginBottom: 15,
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#f4e1e1',
+  },
+  errorText: {
+    color: '#db4848',
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 16,
   },
   btn: {
     paddingVertical: 13,

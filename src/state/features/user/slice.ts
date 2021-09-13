@@ -4,16 +4,16 @@ import { IUser } from '../../../interfaces';
 
 interface UserState {
   userData: IUser | null;
-  token: string | null;
+  token: string;
   loading: boolean;
-  error: {} | null;
+  error: string;
 }
 
 const initialState: UserState = {
   userData: null,
-  token: null,
+  token: '',
   loading: false,
-  error: null,
+  error: '',
 };
 
 export const userSlice = createSlice({
@@ -26,21 +26,18 @@ export const userSlice = createSlice({
       state.token = token;
       state.loading = false;
     },
-    setError: (state, action) => {
+    setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
       state.loading = false;
     },
     setLoading: (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = '';
     },
     logoutUser: (state) => {
       state.userData = null;
-      state.token = null;
+      state.token = '';
     },
-    clearError: (state) => {
-      state.error = null;
-    }
   },
 });
 
