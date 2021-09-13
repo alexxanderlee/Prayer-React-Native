@@ -7,58 +7,54 @@ import { userApi } from '../../../utils/api';
 
 const errorLoginMessage = 'Unable to log in. Please check your email and password and try again.';
 
-function* loginUserWorker(action: PayloadAction<LoginUserPayload>) {
+const wrapper = (errorHandler: any, sagaWorker: any) => function* (action: any) {
   yield put(userActions.setLoading());
   try {
-    const response: AxiosResponse = yield call(userApi.login, action.payload);
-    if (response.status === 201) {
-      const { data } = response;
-      if (data.token) {
-        const payload = {
-          userData: {
-            id: data.id,
-            name: data.name,
-            email: data.email,
-          },
-          token: data.token,
-        };
-        yield put(userActions.setUser(payload));
-      } else {
-        yield put(userActions.setError(errorLoginMessage));
-      }
-    } else {
-      yield put(userActions.setError(response.statusText));
-    }
+    yield call(sagaWorker, action);
   } catch (e) {
-    const error = (e as AxiosError);
+    yield call(errorHandler, e);
+  }
+}
+
+function* onError(error: AxiosError) {
+  if (error.response) {
+    yield put(userActions.setError(error.response.statusText));
+  } else {
     yield put(userActions.setError(error.message));
   }
 }
 
 function* signupUserWorker(action: PayloadAction<SignupUserPayload>) {
-  yield put(userActions.setLoading());
-  try {
-    const { data }: AxiosResponse = yield call(userApi.signup, action.payload);
-    if (data.token) {
-      const payload = {
-        userData: {
-          id: data.id,
-          name: data.name,
-          email: data.email,
-        },
-        token: data.token,
-      };
-      yield put(userActions.setUser(payload));
-    } else {
-      yield put(userActions.setError('Sign up error.'));
-    }
-  } catch (e) {
-    const error = (e as AxiosError);
-    yield put(userActions.setError(error.message));
+  const { data }: AxiosResponse = yield call(userApi.signup, action.payload);
+  const payload = {
+    userData: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+    },
+    token: data.token,
+  };
+  yield put(userActions.setUser(payload));
+}
+
+function* loginUserWorker(action: PayloadAction<LoginUserPayload>) {
+  const { data }: AxiosResponse = yield call(userApi.login, action.payload);
+  if (data.token) {
+    const payload = {
+      userData: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+      },
+      token: data.token,
+    };
+    yield put(userActions.setUser(payload));
+  } else {
+    yield put(userActions.setError(errorLoginMessage));
   }
 }
 
 export function* userWatcher() {
-  yield takeEvery(userActions.loginUser, loginUserWorker);
-  yield takeEvery(userActions.signupUser, signupUserWorker);
+  yield takeEvery(userActions.loginUser, wrapper(onError, loginUserWorker));
+  yield takeEvery(userActions.signupUser, wrapper(onError, signupUserWorker));
 }
