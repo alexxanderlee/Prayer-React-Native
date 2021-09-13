@@ -1,12 +1,13 @@
 /* eslint-disable */
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, Platform, StatusBar, ActivityIndicator } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { AuthNavParamsList } from '../navigation/types';
-import { useAppDispatch } from '../state/hooks';
-import { userActions } from '../state/features/user';
+import { useAppDispatch, useAppSelector } from '../state/hooks';
+import { userActions, userSelectors } from '../state/features/user';
 import { InputField } from '../components/UI';
+import validators from '../utils/validation';
 
 interface FormValues {
   email: string,
@@ -19,9 +20,15 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(userSelectors.isLoading);
+  const error = useAppSelector(userSelectors.getError)
 
   function onSubmit(values: FormValues) {
     dispatch(userActions.loginUser(values));
+  }
+
+  if (error) {
+    return <View><Text>{JSON.stringify(error)}</Text></View>;
   }
 
   return (
@@ -29,34 +36,41 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       <View style={styles.wrapper}>
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.text}>Welcome to Prayer</Text>
-        <Form
-          onSubmit={onSubmit}
-          render={({ handleSubmit }) => (
-            <>
-              <Field
-                name="email"
-                placeholder="Email"
-                placeholderTextColor="#b3b3b3"
-                component={InputField}
-              />
-              <Field
-                name="password"
-                placeholder="Password"
-                secureTextEntry={true}
-                component={InputField}
-              />
-              <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-                <Text style={styles.btnText}>Login</Text>
+        {isLoading ? (
+          <ActivityIndicator  color="#72A8BC" size="large" />
+        ) : (
+          <>
+            <Form
+              onSubmit={onSubmit}
+              render={({ handleSubmit, submitting, pristine }) => (
+                <>
+                  <Field
+                    name="email"
+                    placeholder="Email"
+                    validate={validators.required}
+                    component={InputField}
+                  />
+                  <Field
+                    name="password"
+                    placeholder="Password"
+                    secureTextEntry={true}
+                    validate={validators.required}
+                    component={InputField}
+                  />
+                  <TouchableOpacity style={styles.btn} onPress={handleSubmit} disabled={submitting || pristine}>
+                    <Text style={styles.btnText}>Login</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            />
+            <View style={styles.signup}>
+              <Text style={styles.signupText}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                <Text style={styles.signupLink}>Sign Up</Text>
               </TouchableOpacity>
-            </>
-          )}
-        />
-        <View style={styles.signup}>
-          <Text style={styles.signupText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={styles.signupLink}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
+            </View>
+          </>
+        )}
       </View>
     </SafeAreaView>
   );

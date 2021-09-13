@@ -6,7 +6,7 @@ import { useAppSelector } from '../state/hooks';
 
 const RootNavigator: React.FC = () => {
   const token = useAppSelector(userSelectors.getToken);
-
+  
   return (
     token
       ? <AppNavigator />

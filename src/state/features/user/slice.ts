@@ -5,12 +5,14 @@ import { IUser } from '../../../interfaces';
 interface UserState {
   userData: IUser | null;
   token: string | null;
+  loading: boolean;
   error: {} | null;
 }
 
 const initialState: UserState = {
   userData: null,
   token: null,
+  loading: false,
   error: null,
 };
 
@@ -22,15 +24,17 @@ export const userSlice = createSlice({
       const { userData, token } = action.payload;
       state.userData = userData;
       state.token = token;
-      state.error = null;
-    },
-    logoutUser: (state) => {
-      state.userData = null;
-      state.token = null;
-      state.error = null;
+      state.loading = false;
     },
     setError: (state, action) => {
       state.error = action.payload;
+      state.loading = false;
+    },
+    setLoading: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    logoutUser: (state) => {
       state.userData = null;
       state.token = null;
     },

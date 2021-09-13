@@ -18,6 +18,7 @@ const InputFiled: React.FC<InputFiledProps> = ({
   placeholderTextColor = '#b3b3b3',
   secureTextEntry = false,
 }) => {
+  
   return (
     <TextInput
       value={input.value}

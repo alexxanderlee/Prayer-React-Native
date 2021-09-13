@@ -3,8 +3,8 @@ import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Platform, StatusBar, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppNavParamsList } from '../navigation/types';
-import { useAppDispatch } from '../state/hooks';
-import { userActions } from '../state/features/user';
+import { useAppDispatch, useAppSelector } from '../state/hooks';
+import { userActions, userSelectors } from '../state/features/user';
 
 interface UserModalProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'UserModal'>;
@@ -12,6 +12,7 @@ interface UserModalProps {
 
 const UserModal: React.FC<UserModalProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(userSelectors.getUserData);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -20,8 +21,8 @@ const UserModal: React.FC<UserModalProps> = ({ navigation }) => {
       </TouchableWithoutFeedback>
       <View style={styles.window}>
         <Image style={styles.avatar} source={require('../assets/images/noavatar.png')} />
-        <Text style={styles.nameString}>User Name</Text>
-        <Text style={styles.emailString}>email@domain.com</Text>
+        <Text style={styles.nameString}>{user.name}</Text>
+        <Text style={styles.emailString}>{user.email}</Text>
         <TouchableOpacity style={styles.btn} onPress={() => dispatch(userActions.logoutUser())}>
           <Text style={styles.btnText}>Log Out</Text>
         </TouchableOpacity>
