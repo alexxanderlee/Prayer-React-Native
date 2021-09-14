@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, Platform, StatusBar, ActivityIndicator } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform, StatusBar, ActivityIndicator } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { AuthNavParamsList } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../state/hooks';
@@ -29,7 +29,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
+      <ScrollView contentContainerStyle={styles.contentWrapper}>
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.text}>Welcome to Prayer</Text>
 
@@ -51,6 +51,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                     name="email"
                     placeholder="Email"
                     showErrorText={false}
+                    customStyle={{ marginBottom: 15, }}
                     validate={validators.required}
                     component={InputField}
                   />
@@ -59,6 +60,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                     placeholder="Password"
                     secureTextEntry={true}
                     showErrorText={false}
+                    customStyle={{ marginBottom: 15, }}
                     validate={validators.required}
                     component={InputField}
                   />
@@ -76,7 +78,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
             </View>
           </>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -86,11 +88,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  wrapper: {
-    width: '75%',
+  contentWrapper: {
+    paddingHorizontal: 40,
+    flex: 1,
+    justifyContent: 'center',
   },
   title: {
     marginBottom: 6,

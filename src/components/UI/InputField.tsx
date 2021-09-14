@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { TextInput, Text, StyleSheet, ViewStyle } from 'react-native';
+import { TextInput, View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { FieldRenderProps } from 'react-final-form';
 
 interface InputFiledProps extends FieldRenderProps<string> {
@@ -25,7 +25,7 @@ const InputFiled: React.FC<InputFiledProps> = ({
     : [styles.input, customStyle];
 
   return (
-    <>
+    <View>
       {showErrorText && meta.error && meta.touched && (
         <Text style={styles.errorText}>
           {meta.error}
@@ -38,14 +38,14 @@ const InputFiled: React.FC<InputFiledProps> = ({
         placeholder={placeholder} 
         placeholderTextColor={placeholderTextColor}
         secureTextEntry={secureTextEntry}
+        onBlur={() => input.onBlur()}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: 15,
     backgroundColor: '#f2f2f2',
     paddingVertical: 9,
     paddingHorizontal: 20,
@@ -59,12 +59,13 @@ const styles = StyleSheet.create({
     borderColor: '#f2f2f2',
   },
   errorText: {
-    marginLeft: 20,
-    marginBottom: 3,
+    position: 'absolute',
+    top: -14,
+    left: 20,
     color: '#db4848',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '400',
-    lineHeight: 14,
+    lineHeight: 13,
   },
 });
 

@@ -1,39 +1,108 @@
 /* eslint-disable */
 import React from 'react';
-import { SafeAreaView, View, Text, TextInput, StyleSheet, Platform, StatusBar, TouchableOpacity } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, Platform, StatusBar, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Form, Field } from 'react-final-form';
 import { AuthNavParamsList } from '../navigation/types';
 import { BackArrowSvg } from '../components/svg';
+import { InputField } from '../components/UI';
+import validators, { composeValidators } from '../utils/validation';
+
+interface FormValues {
+  name: string,
+  email: string,
+  password: string,
+  confirm: string,
+}
+
+interface FormErrors {
+  name?: string,
+  email?: string,
+  password?: string,
+  confirm?: string,
+}
 
 interface SignupProps {
   navigation: NativeStackNavigationProp<AuthNavParamsList, 'Signup'>;
 }
 
 const Signup: React.FC<SignupProps> = ({ navigation }) => {
+
+  function onSubmit(values: FormValues) {
+
+  }
+
+  function formValidation(values: FormValues) {
+    const errors: FormErrors = {};
+    if (values.password !== values.confirm) {
+      errors.confirm = 'Must match';
+    }
+    return errors;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <BackArrowSvg color={'#514D47'} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.contentWrapper}>
-        <Text style={styles.title}>Sign Up</Text>
-        <Text style={styles.text}>Create an account</Text>
-        <TextInput style={styles.input} placeholder="Name" placeholderTextColor="#b3b3b3" />
-        <TextInput style={styles.input} placeholder="Email" placeholderTextColor="#b3b3b3" />
-        <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#b3b3b3" secureTextEntry />
-        <TextInput style={styles.input} placeholder="Confirm password" placeholderTextColor="#b3b3b3" secureTextEntry />
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnText}>Sign Up</Text>
-        </TouchableOpacity>
-        <View style={styles.login}>
-          <Text style={styles.loginText}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.loginLink}>Login here</Text>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+            <BackArrowSvg color={'#514D47'} />
           </TouchableOpacity>
         </View>
-      </View>
+        <View style={styles.contentWrapper}>
+          <Text style={styles.title}>Sign Up</Text>
+          <Text style={styles.text}>Create an account</Text>
+          <Form 
+            onSubmit={onSubmit}
+            validate={formValidation}
+            render={({ handleSubmit }) => (
+              <>
+                <Field
+                  name="name"
+                  placeholder="Name"
+                  customStyle={{ marginBottom: 15, }}
+                  validate={validators.required}
+                  component={InputField}
+                />
+                <Field
+                  name="email"
+                  placeholder="Email"
+                  customStyle={{ marginBottom: 15, }}
+                  validate={composeValidators(
+                    validators.required,
+                    validators.validateEmail,
+                  )}
+                  component={InputField}
+                />
+                <Field
+                  name="password"
+                  placeholder="Password"
+                  customStyle={{ marginBottom: 15, }}
+                  secureTextEntry
+                  validate={validators.required}
+                  component={InputField}
+                />
+                <Field
+                  name="confirm"
+                  placeholder="Confirm password"
+                  customStyle={{ marginBottom: 15, }}
+                  secureTextEntry
+                  validate={validators.required}
+                  component={InputField}
+                />
+                <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+                  <Text style={styles.btnText}>Sign Up</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          />
+          <View style={styles.login}>
+            <Text style={styles.loginText}>Already have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.loginLink}>Login here</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -52,7 +121,6 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     paddingHorizontal: 40,
-    paddingBottom: 40,
     flex: 1,
     justifyContent: 'center',
   },
@@ -66,7 +134,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   text: {
-    marginBottom: 40,
+    marginBottom: 25,
     color: '#a0a0a0',
     fontSize: 16,
     lineHeight: 18,
