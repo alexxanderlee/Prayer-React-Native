@@ -54,7 +54,10 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={styles.backBtn} onPress={() => {
+            navigation.goBack();
+            dispatch(userActions.clearError());
+          }}>
             <BackArrowSvg color={'#514D47'} />
           </TouchableOpacity>
         </View>
@@ -112,7 +115,10 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
           {!isLoading && (
             <View style={styles.login}>
               <Text style={styles.loginText}>Already have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <TouchableOpacity onPress={() => {
+                navigation.navigate('Login');
+                dispatch(userActions.clearError());
+              }}>
                 <Text style={styles.loginLink}>Login here</Text>
               </TouchableOpacity>
             </View>

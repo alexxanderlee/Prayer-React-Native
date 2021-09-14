@@ -70,7 +70,10 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
         {!isLoading && (
           <View style={styles.signup}>
             <Text style={styles.signupText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('Signup');
+              dispatch(userActions.clearError());
+            }}>
               <Text style={styles.signupLink}>Sign Up</Text>
             </TouchableOpacity>
           </View>

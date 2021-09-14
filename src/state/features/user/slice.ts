@@ -38,6 +38,9 @@ export const userSlice = createSlice({
       state.userData = null;
       state.token = '';
     },
+    clearError: (state) => {
+      state.error = '';
+    }
   },
 });
 
