@@ -1,12 +1,14 @@
 /* eslint-disable */
 import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Platform, StatusBar, TouchableOpacity } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, Platform, StatusBar, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Form, Field } from 'react-final-form';
 import { AuthNavParamsList } from '../navigation/types';
 import { BackArrowSvg } from '../components/svg';
-import { InputField } from '../components/UI';
+import { InputField, Button, ErrorMessage } from '../components/UI';
 import validators, { composeValidators } from '../utils/validation';
+import { useAppDispatch, useAppSelector } from '../state/hooks';
+import { userActions, userSelectors } from '../state/features/user';
 
 interface FormValues {
   name: string,
@@ -27,9 +29,17 @@ interface SignupProps {
 }
 
 const Signup: React.FC<SignupProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(userSelectors.isLoading);
+  const error = useAppSelector(userSelectors.getError);
 
   function onSubmit(values: FormValues) {
-
+    const payload = {
+      email: values.email,
+      name: values.name,
+      password: values.password,
+    };
+    dispatch(userActions.signupUser(payload));
   }
 
   function formValidation(values: FormValues) {
@@ -51,6 +61,9 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
         <View style={styles.contentWrapper}>
           <Text style={styles.title}>Sign Up</Text>
           <Text style={styles.text}>Create an account</Text>
+
+          {error ? <ErrorMessage text={error} /> : null}
+
           <Form 
             onSubmit={onSubmit}
             validate={formValidation}
@@ -89,18 +102,21 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
                   validate={validators.required}
                   component={InputField}
                 />
-                <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-                  <Text style={styles.btnText}>Sign Up</Text>
-                </TouchableOpacity>
+                {isLoading
+                ? <ActivityIndicator  color="#72A8BC" size="large" />
+                  : <Button text="Sign Up" onPress={handleSubmit} />
+                }
               </>
             )}
           />
-          <View style={styles.login}>
-            <Text style={styles.loginText}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.loginLink}>Login here</Text>
-            </TouchableOpacity>
-          </View>
+          {!isLoading && (
+            <View style={styles.login}>
+              <Text style={styles.loginText}>Already have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.loginLink}>Login here</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -152,21 +168,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 20,
     fontWeight: '400',
-    letterSpacing: 0.4,
-  },
-  btn: {
-    paddingVertical: 13,
-    paddingHorizontal: 30,
-    borderRadius: 40,
-    backgroundColor: '#BFB393',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  btnText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    lineHeight: 20,
-    fontWeight: '600',
     letterSpacing: 0.4,
   },
   login: {

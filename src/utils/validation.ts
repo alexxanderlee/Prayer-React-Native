@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { FieldValidator } from 'final-form';
-import { FieldRenderProps } from 'react-final-form';
 
 const emailPattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 

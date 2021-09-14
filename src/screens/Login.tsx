@@ -6,7 +6,7 @@ import { Form, Field } from 'react-final-form';
 import { AuthNavParamsList } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { userActions, userSelectors } from '../state/features/user';
-import { InputField } from '../components/UI';
+import { InputField, Button, ErrorMessage } from '../components/UI';
 import validators from '../utils/validation';
 
 interface FormValues {
@@ -24,7 +24,11 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   const error = useAppSelector(userSelectors.getError);
 
   function onSubmit(values: FormValues) {
-    dispatch(userActions.loginUser(values));
+    const payload = {
+      email: values.email,
+      password: values.password,
+    };
+    dispatch(userActions.loginUser(payload));
   }
 
   return (
@@ -33,50 +37,43 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.text}>Welcome to Prayer</Text>
 
-        {error ? (
-          <View style={styles.error}>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        ) : null}
+        {error ? <ErrorMessage text={error} /> : null}
 
-        {isLoading ? (
-          <ActivityIndicator  color="#72A8BC" size="large" />
-        ) : (
-          <>
-            <Form
-              onSubmit={onSubmit}
-              render={({ handleSubmit }) => (
-                <>
-                  <Field
-                    name="email"
-                    placeholder="Email"
-                    showErrorText={false}
-                    customStyle={{ marginBottom: 15, }}
-                    validate={validators.required}
-                    component={InputField}
-                  />
-                  <Field
-                    name="password"
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    showErrorText={false}
-                    customStyle={{ marginBottom: 15, }}
-                    validate={validators.required}
-                    component={InputField}
-                  />
-                  <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-                    <Text style={styles.btnText}>Login</Text>
-                  </TouchableOpacity>
-                </>
-              )}
-            />
-            <View style={styles.signup}>
-              <Text style={styles.signupText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                <Text style={styles.signupLink}>Sign Up</Text>
-              </TouchableOpacity>
-            </View>
-          </>
+        <Form
+          onSubmit={onSubmit}
+          render={({ handleSubmit }) => (
+            <>
+              <Field
+                name="email"
+                placeholder="Email"
+                showErrorText={false}
+                customStyle={{ marginBottom: 15, }}
+                validate={validators.required}
+                component={InputField}
+              />
+              <Field
+                name="password"
+                placeholder="Password"
+                secureTextEntry={true}
+                showErrorText={false}
+                customStyle={{ marginBottom: 15, }}
+                validate={validators.required}
+                component={InputField}
+              />
+              {isLoading
+                ? <ActivityIndicator  color="#72A8BC" size="large" />
+                : <Button text="Login" onPress={handleSubmit} />
+              }
+            </>
+          )}
+        />
+        {!isLoading && (
+          <View style={styles.signup}>
+            <Text style={styles.signupText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <Text style={styles.signupLink}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -111,33 +108,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.6,
     textAlign: 'center',
-  },
-  error: {
-    marginBottom: 15,
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: '#f4e1e1',
-  },
-  errorText: {
-    color: '#db4848',
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 16,
-  },
-  btn: {
-    paddingVertical: 13,
-    paddingHorizontal: 30,
-    borderRadius: 40,
-    backgroundColor: '#BFB393',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  btnText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    lineHeight: 20,
-    fontWeight: '600',
-    letterSpacing: 0.4,
   },
   signup: {
     marginTop: 25,
