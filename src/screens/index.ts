@@ -1,7 +1,7 @@
-export { default as Desk } from './Desk';
-export { default as PrayersList } from './PrayersList';
-export { default as Login } from './Login';
-export { default as Signup } from './Signup';
-export { default as PrayerDetails } from './PrayerDetails';
-export { default as SubscribedPrayersList } from './SubscribedPrayersList';
-export { default as UserModal } from './UserModal';
+export { default as DeskScreen } from './DeskScreen';
+export { default as PrayersListScreen } from './PrayersListScreen';
+export { default as LoginScreen } from './LoginScreen';
+export { default as SignupScreen } from './SignupScreen';
+export { default as PrayerDetailsScreen } from './PrayerDetailsScreen';
+export { default as SubPrayersListScreen } from './SubPrayersListScreen';
+export { default as UserModalScreen } from './UserModalScreen';

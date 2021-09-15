@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { PayloadAction } from '@reduxjs/toolkit'
 import { put, takeEvery, call } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';

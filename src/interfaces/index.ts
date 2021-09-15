@@ -24,5 +24,5 @@ export interface IComment {
   created: string;
   prayerId: number;
   author: string;
-  avatar: any;
+  avatar?: any;
 }

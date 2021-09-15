@@ -1,10 +1,19 @@
-/* eslint-disable */
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Platform, StatusBar, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AppNavParamsList } from '../navigation/types';
-import { useAppDispatch, useAppSelector } from '../state/hooks';
-import { userActions, userSelectors } from '../state/features/user';
+import { AppNavParamsList } from '../../navigation/types';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
+import { userActions, userSelectors } from '../../state/features/user';
 
 interface UserModalProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'UserModal'>;
@@ -17,10 +26,10 @@ const UserModal: React.FC<UserModalProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigation.pop()}>
-        <View style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: '100%' }} />
+        <View style={styles.cover} />
       </TouchableWithoutFeedback>
       <View style={styles.window}>
-        <Image style={styles.avatar} source={require('../assets/images/noavatar.png')} />
+        <Image style={styles.avatar} source={require('../../assets/images/noavatar.png')} />
         <Text style={styles.nameString}>{user.name}</Text>
         <Text style={styles.emailString}>{user.email}</Text>
         <TouchableOpacity style={styles.btn} onPress={() => dispatch(userActions.logoutUser())}>
@@ -35,8 +44,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 15,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  cover: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
   },
   window: {
     marginTop: 15,
@@ -79,7 +95,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     fontWeight: '600',
     letterSpacing: 0.4,
-  }
+  },
 });
 
 export default UserModal;

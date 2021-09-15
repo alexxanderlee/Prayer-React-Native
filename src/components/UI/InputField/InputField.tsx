@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { TextInput, View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { FieldRenderProps } from 'react-final-form';

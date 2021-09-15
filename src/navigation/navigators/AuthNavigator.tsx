@@ -1,8 +1,7 @@
-/* eslint-disable */
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthNavParamsList } from '../types';
-import { Login, Signup } from '../../screens';
+import { LoginScreen, SignupScreen } from '../../screens';
 
 const Stack = createNativeStackNavigator<AuthNavParamsList>();
 
@@ -17,11 +16,11 @@ const AuthNavigator: React.FC = () => {
     >
       <Stack.Screen
         name="Login"
-        component={Login}
+        component={LoginScreen}
       />
       <Stack.Screen
         name="Signup"
-        component={Signup}
+        component={SignupScreen}
       />
     </Stack.Navigator>
   );

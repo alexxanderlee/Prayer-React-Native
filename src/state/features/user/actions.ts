@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { createAction } from '@reduxjs/toolkit';
 import { userSlice } from './slice';
 

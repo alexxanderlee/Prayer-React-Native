@@ -1,13 +1,22 @@
-/* eslint-disable */
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform, StatusBar, ActivityIndicator } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
 import { Form, Field } from 'react-final-form';
-import { AuthNavParamsList } from '../navigation/types';
-import { useAppDispatch, useAppSelector } from '../state/hooks';
-import { userActions, userSelectors } from '../state/features/user';
-import { InputField, Button, ErrorMessage } from '../components/UI';
-import validators from '../utils/validation';
+import { AuthNavParamsList } from '../../navigation/types';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
+import { userActions, userSelectors } from '../../state/features/user';
+import { InputField, Button, ErrorMessage } from '../../components/UI';
+import validators from '../../utils/validation';
 
 interface FormValues {
   email: string,
@@ -47,7 +56,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                 name="email"
                 placeholder="Email"
                 showErrorText={false}
-                customStyle={{ marginBottom: 15, }}
+                customStyle={styles.input}
                 validate={validators.required}
                 component={InputField}
               />
@@ -56,7 +65,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                 placeholder="Password"
                 secureTextEntry={true}
                 showErrorText={false}
-                customStyle={{ marginBottom: 15, }}
+                customStyle={styles.input}
                 validate={validators.required}
                 component={InputField}
               />
@@ -87,7 +96,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   contentWrapper: {
     paddingHorizontal: 40,
@@ -111,6 +120,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.6,
     textAlign: 'center',
+  },
+  input: {
+    marginBottom: 15,
   },
   signup: {
     marginTop: 25,

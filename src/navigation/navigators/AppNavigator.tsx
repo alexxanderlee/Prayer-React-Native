@@ -1,7 +1,6 @@
-/* eslint-disable */
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Desk, UserModal, PrayerDetails } from '../../screens';
+import { DeskScreen, UserModalScreen, PrayerDetailsScreen } from '../../screens';
 import { AppNavParamsList } from '../types';
 import { PrayersListNavigator } from '../navigators';
 
@@ -13,7 +12,7 @@ const AppNavigator: React.FC = () => {
       <Stack.Group screenOptions={{ animation: 'slide_from_right' }}>
         <Stack.Screen
           name="Desk"
-          component={Desk}
+          component={DeskScreen}
         />
         <Stack.Screen
           name="PrayersList"
@@ -21,13 +20,13 @@ const AppNavigator: React.FC = () => {
         />
         <Stack.Screen
           name="PrayerDetails"
-          component={PrayerDetails}
+          component={PrayerDetailsScreen}
         />
       </Stack.Group>
       <Stack.Group screenOptions={{ presentation: 'transparentModal', animation: 'fade' }}>
         <Stack.Screen
           name="UserModal"
-          component={UserModal}
+          component={UserModalScreen}
         />
       </Stack.Group>
     </Stack.Navigator>

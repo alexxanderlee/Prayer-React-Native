@@ -1,14 +1,23 @@
-/* eslint-disable */
 import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Platform, StatusBar, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  StatusBar,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Form, Field } from 'react-final-form';
-import { AuthNavParamsList } from '../navigation/types';
-import { BackArrowSvg } from '../components/svg';
-import { InputField, Button, ErrorMessage } from '../components/UI';
-import validators, { composeValidators } from '../utils/validation';
-import { useAppDispatch, useAppSelector } from '../state/hooks';
-import { userActions, userSelectors } from '../state/features/user';
+import { AuthNavParamsList } from '../../navigation/types';
+import { BackArrowSvg } from '../../components/svg';
+import { InputField, Button, ErrorMessage } from '../../components/UI';
+import validators, { composeValidators } from '../../utils/validation';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
+import { userActions, userSelectors } from '../../state/features/user';
 
 interface FormValues {
   name: string,
@@ -52,7 +61,7 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.wrapper}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => {
             navigation.goBack();
@@ -61,13 +70,13 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
             <BackArrowSvg color={'#514D47'} />
           </TouchableOpacity>
         </View>
-        <View style={styles.contentWrapper}>
+        <View style={styles.content}>
           <Text style={styles.title}>Sign Up</Text>
           <Text style={styles.text}>Create an account</Text>
 
           {error ? <ErrorMessage text={error} /> : null}
 
-          <Form 
+          <Form
             onSubmit={onSubmit}
             validate={formValidation}
             render={({ handleSubmit }) => (
@@ -75,14 +84,14 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
                 <Field
                   name="name"
                   placeholder="Name"
-                  customStyle={{ marginBottom: 15, }}
+                  customStyle={styles.input}
                   validate={validators.required}
                   component={InputField}
                 />
                 <Field
                   name="email"
                   placeholder="Email"
-                  customStyle={{ marginBottom: 15, }}
+                  customStyle={styles.input}
                   validate={composeValidators(
                     validators.required,
                     validators.validateEmail,
@@ -92,7 +101,7 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
                 <Field
                   name="password"
                   placeholder="Password"
-                  customStyle={{ marginBottom: 15, }}
+                  customStyle={styles.input}
                   secureTextEntry
                   validate={validators.required}
                   component={InputField}
@@ -100,7 +109,7 @@ const Signup: React.FC<SignupProps> = ({ navigation }) => {
                 <Field
                   name="confirm"
                   placeholder="Confirm password"
-                  customStyle={{ marginBottom: 15, }}
+                  customStyle={styles.input}
                   secureTextEntry
                   validate={validators.required}
                   component={InputField}
@@ -133,7 +142,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  wrapper: {
+    flex: 1,
   },
   header: {
     alignItems: 'flex-start',
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
   backBtn: {
     padding: 20,
   },
-  contentWrapper: {
+  content: {
     paddingHorizontal: 40,
     flex: 1,
     justifyContent: 'center',
@@ -166,15 +178,6 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 15,
-    backgroundColor: '#f2f2f2',
-    paddingVertical: 9,
-    paddingHorizontal: 20,
-    borderRadius: 40,
-    color: '#514D47',
-    fontSize: 17,
-    lineHeight: 20,
-    fontWeight: '400',
-    letterSpacing: 0.4,
   },
   login: {
     marginTop: 25,

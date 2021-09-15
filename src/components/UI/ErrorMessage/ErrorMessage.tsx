@@ -1,6 +1,11 @@
-/* eslint-disable */
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 
 interface ErrorMessageProps {
   text?: string;
