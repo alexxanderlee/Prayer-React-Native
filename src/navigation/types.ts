@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { IColumn, IPrayer } from '../interfaces';
 
@@ -22,4 +21,4 @@ export type AuthNavParamsList = {
 export type PrayersListNavParamsList = {
   MyPrayers: undefined;
   Subscribed: undefined;
-}
+};

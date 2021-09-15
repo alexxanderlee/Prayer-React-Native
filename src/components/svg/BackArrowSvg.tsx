@@ -1,6 +1,5 @@
-/* eslint-disable */
 import React from 'react';
-import Svg, { SvgProps, Mask, Path, G } from 'react-native-svg';
+import Svg, { SvgProps, Path } from 'react-native-svg';
 
 interface BackArrowSvgProps extends SvgProps {
   color?: string;

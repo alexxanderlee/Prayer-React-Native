@@ -1,10 +1,10 @@
-/* eslint-disable */
 import React from 'react';
+import { SafeAreaView, StyleSheet, Platform, StatusBar } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { AppNavParamsList, PrayersListNavParamsList } from '../types';
-import { PrayersList, SubscribedPrayersList } from '../../screens';
+import { PrayersListScreen, SubPrayersListScreen } from '../../screens';
 import { Header } from '../../components';
 import { SettingsSvg } from '../../components/svg';
 
@@ -19,7 +19,7 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
   const { column } = route.params;
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
       <Header
         navigation={navigation}
         title={column.title}
@@ -43,17 +43,25 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
       >
         <Tab.Screen
           name="MyPrayers"
-          component={PrayersList}
+          component={PrayersListScreen}
           options={{ title: 'My Prayers' }}
         />
         <Tab.Screen
           name="Subscribed"
-          component={SubscribedPrayersList}
+          component={SubPrayersListScreen}
           options={{ title: 'Subscribed' }}
         />
       </Tab.Navigator>
-    </>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+});
 
 export default PrayersListNavigator;

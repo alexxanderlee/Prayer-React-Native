@@ -1,11 +1,11 @@
-/* eslint-disable */
 import React from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet, FlatList, Text } from 'react-native';
+import { View, TouchableOpacity, TextInput, StyleSheet, FlatList } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PrayerItem } from '../components';
-import { PlusLgSvg } from '../components/svg';
-import { AppNavParamsList } from '../navigation/types';
-import { IPrayer } from '../interfaces';
+import { PrayerItem } from '../../components';
+import { PlusLgSvg } from '../../components/svg';
+import { Button } from '../../components/UI';
+import { AppNavParamsList } from '../../navigation/types';
+import { IPrayer } from '../../interfaces';
 
 const prayers: IPrayer[] = [
   {
@@ -37,35 +37,40 @@ interface PrayersListProps {
 
 const PrayersList: React.FC<PrayersListProps> = ({ navigation }) => {
   return (
-    <View style={styles.content}>
-      <FlatList
-        ListHeaderComponent={(
-          <View style={styles.inputWrapper}>
-            <TouchableOpacity style={styles.inputBtn}>
-              <PlusLgSvg />
-            </TouchableOpacity>
-            <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
-          </View>
-        )}
-        contentContainerStyle={{ padding: 15, paddingBottom: 30 }}
-        data={prayers}
-        renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
-        keyExtractor={item => item.id.toString()}
-        ListFooterComponent={(
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Show answered prayers</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-    </View>
+    <FlatList
+      data={prayers}
+      renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      keyExtractor={item => item.id.toString()}
+      contentContainerStyle={styles.content}
+      style={styles.flatList}
+      ListHeaderComponent={(
+        <View style={styles.inputWrapper}>
+          <TouchableOpacity style={styles.inputBtn}>
+            <PlusLgSvg />
+          </TouchableOpacity>
+          <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
+        </View>
+      )}
+      ListFooterComponent={(
+        <View style={styles.buttonWrapper}>
+          <Button
+            text="Show answered prayers"
+            customStyle={styles.button}
+            customTextStyle={styles.buttonText}
+          />
+        </View>
+      )}
+    />
   );
 };
 
 const styles = StyleSheet.create({
+  flatList: {
+    backgroundColor: '#FFFFFF',
+  },
   content: {
-    flex: 1,
+    padding: 15,
+    paddingBottom: 30,
     backgroundColor: '#FFFFFF',
   },
   inputWrapper: {

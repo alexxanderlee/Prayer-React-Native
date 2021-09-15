@@ -1,10 +1,10 @@
-/* eslint-disable */
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, FlatList, Text } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PrayerItem } from '../components';
-import { AppNavParamsList } from '../navigation/types';
-import { IPrayer } from '../interfaces';
+import { PrayerItem } from '../../components';
+import { Button } from '../../components/UI';
+import { AppNavParamsList } from '../../navigation/types';
+import { IPrayer } from '../../interfaces';
 
 const prayers: IPrayer[] = [
   {
@@ -37,33 +37,38 @@ const prayers: IPrayer[] = [
   },
 ];
 
-interface SubscribedPrayersListProps {
+interface SubPrayersListProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
 }
 
-const SubscribedPrayersList: React.FC<SubscribedPrayersListProps> = ({ navigation }) => {
+const SubPrayersList: React.FC<SubPrayersListProps> = ({ navigation }) => {
   return (
-    <View style={styles.content}>
-      <FlatList
-        contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 30 }}
-        data={prayers}
-        renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
-        keyExtractor={item => item.id.toString()}
-        ListFooterComponent={(
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Show answered prayers</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-    </View>
+    <FlatList
+      data={prayers}
+      renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      keyExtractor={item => item.id.toString()}
+      contentContainerStyle={styles.content}
+      style={styles.flatlist}
+      ListFooterComponent={(
+        <View style={styles.buttonWrapper}>
+          <Button
+            text="Show answered prayers"
+            customStyle={styles.button}
+            customTextStyle={styles.buttonText}
+          />
+        </View>
+      )}
+    />
   );
 };
 
 const styles = StyleSheet.create({
+  flatlist: {
+    backgroundColor: '#FFFFFF',
+  },
   content: {
-    flex: 1,
+    padding: 15,
+    paddingBottom: 30,
     backgroundColor: '#FFFFFF',
   },
   buttonWrapper: {
@@ -91,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SubscribedPrayersList;
+export default SubPrayersList;

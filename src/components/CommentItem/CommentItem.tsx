@@ -1,9 +1,8 @@
-/* eslint-disable */
 import React from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { IComment } from '../interfaces';
+import { IComment } from '../../interfaces';
 
 dayjs.extend(relativeTime);
 
@@ -13,10 +12,11 @@ interface CommentItemProps {
 
 const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
   const time = dayjs().to(dayjs(comment.created));
+  const avatar = comment.avatar ?? require('../../assets/images/noavatar.png');
 
   return (
     <View style={styles.comment}>
-      <Image style={styles.avatar} source={comment.avatar} />
+      <Image style={styles.avatar} source={avatar} />
       <View style={styles.content}>
         <View style={styles.info}>
           <Text style={styles.username}>{comment.author}</Text>

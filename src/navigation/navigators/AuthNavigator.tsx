@@ -1,16 +1,11 @@
-/* eslint-disable */
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthNavParamsList } from '../types';
-import { Login, Signup } from '../../screens';
-
-interface Props {
-  setIsSignedIn: (value: boolean) => void;
-}
+import { LoginScreen, SignupScreen } from '../../screens';
 
 const Stack = createNativeStackNavigator<AuthNavParamsList>();
 
-const AuthNavigator: React.FC<Props> = ({ setIsSignedIn }) => {
+const AuthNavigator: React.FC = () => {
   return (
     <Stack.Navigator
       initialRouteName="Login"
@@ -19,12 +14,13 @@ const AuthNavigator: React.FC<Props> = ({ setIsSignedIn }) => {
         animation: 'slide_from_right',
       }}
     >
-      <Stack.Screen name="Login">
-        {props => <Login {...props} setIsSignedIn={setIsSignedIn} />}
-      </Stack.Screen>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+      />
       <Stack.Screen
         name="Signup"
-        component={Signup}
+        component={SignupScreen}
       />
     </Stack.Navigator>
   );

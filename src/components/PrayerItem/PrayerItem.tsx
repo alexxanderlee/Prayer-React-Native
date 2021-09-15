@@ -1,10 +1,9 @@
-/* eslint-disable */
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, LayoutChangeEvent } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, TextStyle } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { IPrayer } from '../interfaces';
-import { PrayHandsSvg, UserSvg, CheckSvg } from './svg';
-import { AppNavParamsList } from '../navigation/types';
+import { IPrayer } from '../../interfaces';
+import { PrayHandsSvg, UserSvg, CheckSvg } from '../svg';
+import { AppNavParamsList } from '../../navigation/types';
 
 interface PrayerItemProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
@@ -16,9 +15,13 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
   const [praysCount, setPraysCount] = React.useState<number>(0);
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
 
+  const titleStyle: TextStyle = StyleSheet.flatten([styles.title, {
+    textDecorationLine: isChecked ? 'line-through' : 'none',
+  }]);
+
   return (
     <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('PrayerDetails', { prayer })}>
-      <View style={styles.indicator}></View>
+      <View style={styles.indicator} />
 
       <TouchableOpacity style={styles.checkbox} onPress={() => setIsChecked(!isChecked)}>
         <View style={styles.checkboxBox}>
@@ -28,7 +31,7 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
 
       <Text
         numberOfLines={1}
-        style={{ ...styles.title, textDecorationLine: isChecked ? 'line-through' : 'none' }}
+        style={titleStyle}
       >{prayer.title}</Text>
 
       <TouchableOpacity style={styles.btn} onPress={() => setMembersCount(membersCount + 1)}>
