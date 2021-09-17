@@ -7,11 +7,16 @@ import { AppNavParamsList } from '../../navigation/types';
 interface ColumnItemProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk'>;
   column: IColumn;
+  onLongPress: () => void;
 }
 
-const ColumnItem: React.FC<ColumnItemProps> = ({ navigation, column }) => {
+const ColumnItem: React.FC<ColumnItemProps> = ({ navigation, column, onLongPress }) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('PrayersList', { column })}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('PrayersList', { column })}
+      onLongPress={onLongPress}
+    >
       <Text style={styles.title}>{column.title}</Text>
     </TouchableOpacity>
   );

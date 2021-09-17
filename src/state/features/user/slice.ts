@@ -39,7 +39,7 @@ export const userSlice = createSlice({
     },
     clearError: (state) => {
       state.error = '';
-    }
+    },
   },
 });
 

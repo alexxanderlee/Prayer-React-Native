@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { DeskScreen, UserModalScreen, PrayerDetailsScreen } from '../../screens';
+import { DeskScreen, UserModalScreen, PrayerDetailsScreen, ModalInput, ContextMenu } from '../../screens';
 import { AppNavParamsList } from '../types';
 import { PrayersListNavigator } from '../navigators';
 
@@ -27,6 +27,14 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen
           name="UserModal"
           component={UserModalScreen}
+        />
+        <Stack.Screen
+          name="ModalInput"
+          component={ModalInput}
+        />
+        <Stack.Screen
+          name="ContextMenu"
+          component={ContextMenu}
         />
       </Stack.Group>
     </Stack.Navigator>
