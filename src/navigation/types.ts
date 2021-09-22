@@ -11,8 +11,6 @@ export type AppNavParamsList = {
   PrayersList: { column: IColumn };
   PrayerDetails: { prayer: IPrayer };
   UserModal: undefined;
-  ModalInput: { onSubmit: (value: string) => void, initialValue: string };
-  ContextMenu: { onEdit: () => void, onDelete: () => void };
 };
 
 export type AuthNavParamsList = {

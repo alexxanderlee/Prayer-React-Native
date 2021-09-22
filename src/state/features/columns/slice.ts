@@ -1,6 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IColumn } from '../../../interfaces';
 
+export interface CreateColumnPayload {
+  title: string;
+  description: string;
+}
+
+export interface UpdateColumnPayload {
+  title: string;
+  description: string;
+  columnId: number;
+}
+
 interface ColumnsState {
   items: IColumn[];
   isLoading: boolean;
@@ -39,19 +50,19 @@ const columnsSlice = createSlice({
       state.error = action.payload;
       state.isLoading = false;
     },
-    fetchGetAllCols: (state) => {
+    getAllColumnsRequest: (state) => {
       state.isLoading = true;
       state.error = '';
     },
-    fetchCreateCol: (state, _action: PayloadAction<{ title: string, description: string }>) => {
+    createCololumnRequset: (state, _action: PayloadAction<CreateColumnPayload>) => {
       state.isLoading = true;
       state.error = '';
     },
-    fetchUpdateCol: (state, _action: PayloadAction<{ title: string, description: string, columnId: number }>) => {
+    updateColumnRequest: (state, _action: PayloadAction<UpdateColumnPayload>) => {
       state.isLoading = true;
       state.error = '';
     },
-    fetchDeleteCol: (state, _action: PayloadAction<number>) => {
+    deleteColumnRequest: (state, _action: PayloadAction<number>) => {
       state.isLoading = true;
       state.error = '';
     },

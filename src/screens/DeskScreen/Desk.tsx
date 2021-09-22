@@ -9,10 +9,11 @@ import {
   RefreshControl,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ColumnItem, Header } from '../../components';
-import { AppNavParamsList } from '../../navigation/types';
-import { PlusSvg } from '../../components/svg';
+import { ColumnItem, Header, ModalWindow } from '../../components';
 import { ErrorMessage } from '../../components/UI';
+import { ModalInput, ContextMenu } from '../../components/modals';
+import { PlusSvg } from '../../components/svg';
+import { AppNavParamsList } from '../../navigation/types';
 import { useAppSelector, useAppDispatch } from '../../state/hooks';
 import { columnsSelectors, columnsActions } from '../../state/features/columns';
 import { IColumn } from '../../interfaces';
@@ -28,44 +29,52 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
   const isLoading = useAppSelector(columnsSelectors.isLoading);
   const error = useAppSelector(columnsSelectors.getError);
 
+  const [currentColumn, setCurrentColumn] = React.useState<IColumn | null>(null);
+  const [modalInputVisible, setModalInputVisible] = React.useState<boolean>(false);
+  const [modalMenuVisible, setModalMenuVisible] = React.useState<boolean>(false);
+
   React.useEffect(() => {
-    dispatch(columnsActions.fetchGetAllCols());
+    dispatch(columnsActions.getAllColumnsRequest());
   }, []);
 
   const onRefresh = React.useCallback(() => {
-    dispatch(columnsActions.fetchGetAllCols());
+    dispatch(columnsActions.getAllColumnsRequest());
   }, []);
-
-  function createNewColumn(title: string) {
-    dispatch(columnsActions.fetchCreateCol({ title, description: '' }));
-  }
-
-  function deleteColumn(id: number) {
-    dispatch(columnsActions.fetchDeleteCol(id));
-  }
-
-  function editColumn(column: IColumn) {
-    const onSubmit = (title: string) => dispatch(columnsActions.fetchUpdateCol({
-      title,
-      description: column.description,
-      columnId: column.id,
-    }));
-    navigation.replace('ModalInput', {
-      onSubmit,
-      initialValue: column.title,
-    });
-  }
 
   return (
     <SafeAreaView style={styles.container}>
+      <ModalWindow
+        visible={modalInputVisible}
+        setVisible={setModalInputVisible}
+        onClose={() =>setCurrentColumn(null)}
+      >
+        <ModalInput
+          currentColumn={currentColumn!}
+          setCurrentColumn={setCurrentColumn}
+          setModalVisible={setModalInputVisible}
+        />
+      </ModalWindow>
+
+      <ModalWindow
+        visible={modalMenuVisible}
+        setVisible={setModalMenuVisible}
+        onClose={() =>setCurrentColumn(null)}
+        contentAlign="flex-end"
+      >
+        <ContextMenu
+          currentColumn={currentColumn!}
+          setCurrentColumn={setCurrentColumn}
+          setModalVisible={setModalMenuVisible}
+          onDelete={(id) => dispatch(columnsActions.deleteColumnRequest(id))}
+          onEdit={() => setModalInputVisible(true)}
+        />
+      </ModalWindow>
+
       <Header
         title="My Desk"
         navigation={navigation}
         rightBtnIcon={<PlusSvg/>}
-        onRightBtnPress={() => navigation.navigate('ModalInput', {
-          onSubmit: createNewColumn,
-          initialValue: '',
-        })}
+        onRightBtnPress={() => setModalInputVisible(true)}
       />
       {error
         ? <ScrollView
@@ -81,10 +90,10 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
               <ColumnItem
                 column={item}
                 navigation={navigation}
-                onLongPress={() => navigation.navigate('ContextMenu', {
-                  onDelete: () => deleteColumn(item.id),
-                  onEdit: () => editColumn(item),
-                })}
+                onLongPress={() => {
+                  setCurrentColumn(item);
+                  setModalMenuVisible(true);
+                }}
               />
             )}
             keyExtractor={item => item.id.toString()}

@@ -1,36 +1,28 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { columnsActions } from './slice';
+import { columnsActions, CreateColumnPayload, UpdateColumnPayload } from './slice';
 import { columnsApi } from '../../../utils/api';
 
 function* getAllColsWorker() {
   const response: AxiosResponse = yield call(columnsApi.getAllColumns);
-  if (response.status === 200) {
-    yield put(columnsActions.setColumns(response.data));
-  }
+  yield put(columnsActions.setColumns(response.data));
 }
 
-function* createColWorker(action: PayloadAction<{ title: string, description: string }>) {
+function* createColWorker(action: PayloadAction<CreateColumnPayload>) {
   const response: AxiosResponse = yield call(columnsApi.createColumn, action.payload);
-  if (response.status === 201) {
-    yield put(columnsActions.addColumn(response.data));
-  }
+  yield put(columnsActions.addColumn(response.data));
 }
 
-function* updateColWorker(action: PayloadAction<{ title: string, description: string, columnId: number }>) {
+function* updateColWorker(action: PayloadAction<UpdateColumnPayload>) {
   const { title, description, columnId } = action.payload;
   const response: AxiosResponse = yield call(columnsApi.updateColumnById, { title, description }, columnId );
-  if (response.status === 200) {
-    yield put(columnsActions.updateColumn(response.data));
-  }
+  yield put(columnsActions.updateColumn(response.data));
 }
 
 function* deleteColWorker(action: PayloadAction<number>) {
-  const response: AxiosResponse = yield call(columnsApi.deleteColumnById, action.payload);
-  if (response.status === 200) {
-    yield put(columnsActions.deleteColumnById(action.payload));
-  }
+  yield call(columnsApi.deleteColumnById, action.payload);
+  yield put(columnsActions.deleteColumnById(action.payload));
 }
 
 function* onError(error: AxiosError) {
@@ -41,17 +33,20 @@ function* onError(error: AxiosError) {
   }
 }
 
-const sagaWrapper = (errorHandler: any, sagaWorker: any) => function* (action: any) {
+const sagaWrapper = (
+  errorHandler: (error: AxiosError) => void,
+  sagaWorker: (action: PayloadAction<any>) => void,
+) => function* (action: PayloadAction<any>) {
   try {
     yield call(sagaWorker, action);
   } catch (error) {
-    yield call(errorHandler, error);
+    yield call(errorHandler, error as AxiosError);
   }
 };
 
 export default function* () {
-  yield takeEvery(columnsActions.fetchGetAllCols, sagaWrapper(onError, getAllColsWorker));
-  yield takeEvery(columnsActions.fetchCreateCol, sagaWrapper(onError, createColWorker));
-  yield takeEvery(columnsActions.fetchUpdateCol, sagaWrapper(onError, updateColWorker));
-  yield takeEvery(columnsActions.fetchDeleteCol, sagaWrapper(onError, deleteColWorker));
+  yield takeEvery(columnsActions.getAllColumnsRequest, sagaWrapper(onError, getAllColsWorker));
+  yield takeEvery(columnsActions.createCololumnRequset, sagaWrapper(onError, createColWorker));
+  yield takeEvery(columnsActions.updateColumnRequest, sagaWrapper(onError, updateColWorker));
+  yield takeEvery(columnsActions.deleteColumnRequest, sagaWrapper(onError, deleteColWorker));
 }
