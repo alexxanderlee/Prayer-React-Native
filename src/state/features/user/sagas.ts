@@ -1,4 +1,4 @@
-import { PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction } from '@reduxjs/toolkit';
 import { put, takeEvery, call } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';
 import userActions, { LoginUserPayload, SignupUserPayload } from './actions';
@@ -14,7 +14,7 @@ const wrapper = (errorHandler: any, sagaWorker: any) => function* (action: any) 
   } catch (e) {
     yield call(errorHandler, e);
   }
-}
+};
 
 function* onError(error: AxiosError) {
   if (error.response) {

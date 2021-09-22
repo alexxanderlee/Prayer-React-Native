@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { FieldValidator } from 'final-form';
 
 const emailPattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
