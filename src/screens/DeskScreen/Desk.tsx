@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ColumnItem, Header, ModalWindow } from '../../components';
-import { ErrorMessage } from '../../components/UI';
+import { ErrorMessage, MessageBox } from '../../components/UI';
 import { ModalInput, ContextMenu } from '../../components/modals';
 import { PlusSvg } from '../../components/svg';
 import { AppNavParamsList } from '../../navigation/types';
@@ -99,6 +99,7 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
             keyExtractor={item => item.id.toString()}
             refreshing={isLoading}
             onRefresh={onRefresh}
+            ListEmptyComponent={MessageBox}
           />}
     </SafeAreaView>
   );

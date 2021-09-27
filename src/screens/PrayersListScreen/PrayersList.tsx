@@ -12,7 +12,7 @@ import {
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PrayerItem } from '../../components';
 import { PlusLgSvg } from '../../components/svg';
-import { Button, ErrorMessage } from '../../components/UI';
+import { Button, ErrorMessage, MessageBox } from '../../components/UI';
 import { AppNavParamsList } from '../../navigation/types';
 import { IPrayer } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
@@ -70,10 +70,6 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
     setInputValue('');
   }
 
-  function onChangeInput(value: string) {
-    setInputValue(value);
-  }
-
   function closeRow(rowMap: RowMap<IPrayer>, rowKey: string) {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
@@ -93,7 +89,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
         placeholderTextColor="#9C9C9C"
         style={styles.input}
         value={inputValue}
-        onChangeText={onChangeInput}
+        onChangeText={setInputValue}
         onSubmitEditing={handleSubmit}
         ref={inputRef}
         onBlur={() => {
@@ -135,6 +131,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
       data={checkedPrayers}
       keyExtractor={item => `${item.id}`}
       renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      ListEmptyComponent={<MessageBox text="There are no answered prayers" />}
       renderHiddenItem={HiddenItem}
       disableRightSwipe
       rightOpenValue={-140}
@@ -179,6 +176,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
       renderHiddenItem={HiddenItem}
       disableRightSwipe
       rightOpenValue={-140}
+      ListEmptyComponent={<MessageBox text="There are no prayers" />}
       ListHeaderComponent={InputComponent}
       ListFooterComponent={FooterComponent}
     />
@@ -215,6 +213,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 15,
+    backgroundColor: '#FFFFFF',
   },
   inputWrapper: {
     margin: 15,

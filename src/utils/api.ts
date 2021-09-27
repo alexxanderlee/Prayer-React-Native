@@ -106,3 +106,48 @@ export const prayersApi = {
     });
   },
 };
+
+export const commentsApi = {
+  getAllComments: () => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'GET',
+      url: `${baseUrl}/comments`,
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+  },
+  getCommentById: (commentId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'GET',
+      url: `${baseUrl}/comments/${commentId}`,
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+  },
+  createCommentByPrayerId: (data: { body: string }, prayerId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'POST',
+      url: `${baseUrl}/prayers/${prayerId}/comments`,
+      headers: { 'Authorization': `Bearer ${token}` },
+      data,
+    });
+  },
+  deleteCommentById: (commentId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'DELETE',
+      url: `${baseUrl}/comments/${commentId}`,
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+  },
+  updateCommentById: (data: { body: string }, commentId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'PUT',
+      url: `${baseUrl}/comments/${commentId}`,
+      headers: { 'Authorization': `Bearer ${token}` },
+      data,
+    });
+  },
+};

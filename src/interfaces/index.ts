@@ -21,9 +21,8 @@ export interface IPrayer {
 
 export interface IComment {
   id: number;
-  text: string;
+  body: string;
   created: string;
   prayerId: number;
-  author: string;
-  avatar?: any;
+  userId: number;
 }
