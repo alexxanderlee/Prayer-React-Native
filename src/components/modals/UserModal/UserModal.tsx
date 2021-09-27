@@ -14,7 +14,7 @@ const UserModal: React.FC = () => {
   const user = useAppSelector(userSelectors.getUserData);
 
   return (
-    <View style={styles.window}>
+    <View style={styles.wrapper}>
       <Image style={styles.avatar} source={require('../../../assets/images/noavatar.png')} />
       <Text style={styles.nameString}>{user.name}</Text>
       <Text style={styles.emailString}>{user.email}</Text>
@@ -26,10 +26,8 @@ const UserModal: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  window: {
-    marginTop: 15,
-    backgroundColor: '#FFFFFF',
-    padding: 40,
+  wrapper: {
+    padding: 30,
     borderRadius: 15,
     alignItems: 'center',
   },

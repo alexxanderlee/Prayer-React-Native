@@ -1,80 +1,223 @@
 import React from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  Text,
+  StyleSheet,
+  ListRenderItemInfo,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PrayerItem } from '../../components';
 import { PlusLgSvg } from '../../components/svg';
-import { Button } from '../../components/UI';
+import { Button, ErrorMessage } from '../../components/UI';
 import { AppNavParamsList } from '../../navigation/types';
 import { IPrayer } from '../../interfaces';
-
-const prayers: IPrayer[] = [
-  {
-    id: 0,
-    columnId: 1,
-    title: 'Prayer item one',
-    description: '',
-    checked: false,
-  },
-  {
-    id: 1,
-    columnId: 1,
-    title: 'Prayer item two',
-    description: '',
-    checked: false,
-  },
-  {
-    id: 2,
-    columnId: 0,
-    title: 'Prayer item two which is for my family to love God whole heartedly.',
-    description: '',
-    checked: false,
-  },
-];
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
+import { prayersSelectors, prayersActions } from '../../state/features/prayers';
+import { SwipeListView, RowMap } from 'react-native-swipe-list-view';
 
 interface PrayersListProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
+  columnId: number;
 }
 
-const PrayersList: React.FC<PrayersListProps> = ({ navigation }) => {
-  return (
-    <FlatList
-      data={prayers}
+const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
+  const inputRef = React.useRef<TextInput>(null);
+  const dispatch = useAppDispatch();
+  const checkedPrayers: IPrayer[] = useAppSelector(state => prayersSelectors.getCheckedPrayersByColumnId(state, columnId));
+  const uncheckedPrayers: IPrayer[] = useAppSelector(state => prayersSelectors.getUncheckedPrayersByColumnId(state, columnId));
+  const isLoading = useAppSelector(prayersSelectors.isLodaing);
+  const error = useAppSelector(prayersSelectors.getError);
+
+  const [answeredVisible, setAnsweredVisible] = React.useState<boolean>(false);
+  const [inputValue, setInputValue] = React.useState<string>('');
+  const [curPrayerIitem, setCurPrayerItem] = React.useState<IPrayer | null>(null);
+
+  React.useEffect(() => {
+    dispatch(prayersActions.getAllPrayersRequest());
+  }, []);
+
+  const onRefresh = React.useCallback(() => {
+    dispatch(prayersActions.getAllPrayersRequest());
+  }, []);
+
+  function handleSubmit() {
+    if (!inputValue.trim()) {
+      return;
+    }
+    if (curPrayerIitem) {
+      if (curPrayerIitem.title === inputValue) {
+        return;
+      }
+      dispatch(prayersActions.updatePrayerRequest({
+        id: curPrayerIitem.id,
+        title: inputValue,
+        description: curPrayerIitem.description,
+        checked: curPrayerIitem.checked,
+      }));
+      setCurPrayerItem(null);
+    } else {
+      dispatch(prayersActions.createPrayerRequest({
+        title: inputValue,
+        description: '',
+        checked: false,
+        columnId,
+      }));
+    }
+    setInputValue('');
+  }
+
+  function onChangeInput(value: string) {
+    setInputValue(value);
+  }
+
+  function closeRow(rowMap: RowMap<IPrayer>, rowKey: string) {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  }
+
+  const InputComponent = (
+    <View style={styles.inputWrapper}>
+      <TouchableOpacity style={styles.inputBtn} onPress={() => {
+        handleSubmit();
+        inputRef.current?.blur();
+      }}>
+        <PlusLgSvg />
+      </TouchableOpacity>
+      <TextInput
+        placeholder="Add a prayer..."
+        placeholderTextColor="#9C9C9C"
+        style={styles.input}
+        value={inputValue}
+        onChangeText={onChangeInput}
+        onSubmitEditing={handleSubmit}
+        ref={inputRef}
+        onBlur={() => {
+          setCurPrayerItem(null);
+          setInputValue('');
+        }}
+      />
+    </View>
+  );
+
+  const HiddenItem = (data: ListRenderItemInfo<IPrayer>, rowMap: RowMap<IPrayer>) => (
+    <View style={hiddenItemStyles.item}>
+      <TouchableOpacity
+        style={[hiddenItemStyles.btn, hiddenItemStyles.blueBg]}
+        onPress={() => {
+          closeRow(rowMap, `${data.item.id}`);
+          inputRef.current?.focus();
+          setInputValue(data.item.title);
+          setCurPrayerItem(data.item);
+        }}
+      >
+        <Text style={hiddenItemStyles.btnText}>Edit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[hiddenItemStyles.btn, hiddenItemStyles.redBg]}
+        onPress={() => {
+          closeRow(rowMap, `${data.item.id}`);
+          dispatch(prayersActions.deletePrayerRequset(data.item.id));
+        }}
+      >
+        <Text style={hiddenItemStyles.btnText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const AnsweredPrayersList = (
+    <SwipeListView
+      useFlatList={true}
+      data={checkedPrayers}
+      keyExtractor={item => `${item.id}`}
       renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
-      keyExtractor={item => item.id.toString()}
-      contentContainerStyle={styles.content}
-      style={styles.flatList}
-      ListHeaderComponent={(
-        <View style={styles.inputWrapper}>
-          <TouchableOpacity style={styles.inputBtn}>
-            <PlusLgSvg />
-          </TouchableOpacity>
-          <TextInput placeholder="Add a prayer..." placeholderTextColor="#9C9C9C" style={styles.input} />
-        </View>
-      )}
-      ListFooterComponent={(
-        <View style={styles.buttonWrapper}>
-          <Button
-            text="Show answered prayers"
-            customStyle={styles.button}
-            customTextStyle={styles.buttonText}
-          />
-        </View>
-      )}
+      renderHiddenItem={HiddenItem}
+      disableRightSwipe
+      rightOpenValue={-140}
+    />
+  );
+
+  const FooterComponent = (
+    <>
+      <View style={styles.buttonWrapper}>
+        <Button
+          text="Show answered prayers"
+          customStyle={styles.button}
+          customTextStyle={styles.buttonText}
+          onPress={() => setAnsweredVisible(!answeredVisible)}
+        />
+      </View>
+      {answeredVisible ? AnsweredPrayersList : null}
+    </>
+  );
+
+  if (error) {
+    return (
+      <ScrollView
+        style={styles.container}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
+      >
+        <ErrorMessage text={error} />
+      </ScrollView>
+    );
+  }
+
+  return (
+    <SwipeListView
+      useFlatList={true}
+      data={uncheckedPrayers}
+      keyExtractor={item => `${item.id}`}
+      style={styles.bgColor}
+      refreshing={isLoading}
+      onRefresh={onRefresh}
+      keyboardShouldPersistTaps="handled"
+      renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      renderHiddenItem={HiddenItem}
+      disableRightSwipe
+      rightOpenValue={-140}
+      ListHeaderComponent={InputComponent}
+      ListFooterComponent={FooterComponent}
     />
   );
 };
 
+const hiddenItemStyles = StyleSheet.create({
+  item: {
+    height: 68,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  btn: {
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+  },
+  redBg: {
+    backgroundColor: '#AC5253',
+  },
+  blueBg: {
+    backgroundColor: '#83b3c4',
+  },
+  btnText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    lineHeight: 15,
+    fontWeight: '400',
+  },
+});
+
 const styles = StyleSheet.create({
-  flatList: {
+  bgColor: {
     backgroundColor: '#FFFFFF',
   },
-  content: {
+  container: {
     padding: 15,
-    paddingBottom: 30,
-    backgroundColor: '#FFFFFF',
   },
   inputWrapper: {
-    marginBottom: 15,
+    margin: 15,
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: '#FFFFFF',
@@ -100,7 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    marginTop: 20,
+    marginVertical: 20,
     paddingHorizontal: 20,
     paddingVertical: 8,
     backgroundColor: '#BFB393',

@@ -61,3 +61,48 @@ export const columnsApi = {
     });
   },
 };
+
+export const prayersApi = {
+  getAllPrayers: () => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'GET',
+      url: `${baseUrl}/prayers`,
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+  },
+  getPrayerById: (prayerId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'GET',
+      url: `${baseUrl}/prayers/${prayerId}`,
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+  },
+  updatePrayerById: (data: { title: string, description: string, checked: boolean }, prayerId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'PUT',
+      url: `${baseUrl}/prayers/${prayerId}`,
+      headers: { 'Authorization': `Bearer ${token}` },
+      data,
+    });
+  },
+  deletePrayerById: (prayerId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'DELETE',
+      url: `${baseUrl}/prayers/${prayerId}`,
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+  },
+  createPrayerByColumnId: (data: { title: string, description: string, checked: boolean }, columnId: number) => {
+    const token = userSelectors.getToken(store.getState());
+    return axios({
+      method: 'POST',
+      url: `${baseUrl}/columns/${columnId}/prayers`,
+      headers: { 'Authorization': `Bearer ${token}` },
+      data,
+    });
+  },
+};

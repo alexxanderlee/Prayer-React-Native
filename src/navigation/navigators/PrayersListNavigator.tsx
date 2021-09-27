@@ -37,7 +37,9 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
 
       <Tab.Navigator
         initialRouteName="MyPrayers"
+        backBehavior="none"
         screenOptions={{
+          swipeEnabled: false,
           tabBarActiveTintColor: '#72A8BC',
           tabBarInactiveTintColor: '#C8C8C8',
           tabBarIndicatorStyle: { backgroundColor: '#72A8BC' },
@@ -48,11 +50,9 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
           },
         }}
       >
-        <Tab.Screen
-          name="MyPrayers"
-          component={PrayersListScreen}
-          options={{ title: 'My Prayers' }}
-        />
+        <Tab.Screen name="MyPrayers" options={{ title: 'My Prayers' }}>
+          {props => <PrayersListScreen {...props} columnId={column.id} />}
+        </Tab.Screen>
         <Tab.Screen
           name="Subscribed"
           component={SubPrayersListScreen}
