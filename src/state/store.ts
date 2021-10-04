@@ -11,13 +11,13 @@ import {
 } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import createSagaMiddleware from 'redux-saga';
-import { userReducer, columnsReducer } from './features';
+import { userReducer, columnsReducer, prayersReducer } from './features';
 import rootSaga from './rootSaga';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['user', 'columns'],
+  blacklist: ['user', 'columns', 'prayers'],
 };
 
 const userConfig = {
@@ -35,6 +35,7 @@ const columnsConfig = {
 const rootReducer = combineReducers({
   user: persistReducer(userConfig, userReducer),
   columns: persistReducer(columnsConfig, columnsReducer),
+  prayers: prayersReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

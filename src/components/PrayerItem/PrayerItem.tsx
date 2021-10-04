@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, TextStyle } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, TextStyle, TouchableHighlight } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { IPrayer } from '../../interfaces';
 import { PrayHandsSvg, UserSvg, CheckSvg } from '../svg';
 import { AppNavParamsList } from '../../navigation/types';
+import { useAppDispatch } from '../../state/hooks';
+import { prayersActions } from '../../state/features/prayers';
 
 interface PrayerItemProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
@@ -11,49 +13,63 @@ interface PrayerItemProps {
 }
 
 const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
+  const dispatch = useAppDispatch();
+
   const [membersCount, setMembersCount] = React.useState<number>(0);
   const [praysCount, setPraysCount] = React.useState<number>(0);
-  const [isChecked, setIsChecked] = React.useState<boolean>(false);
 
   const titleStyle: TextStyle = StyleSheet.flatten([styles.title, {
-    textDecorationLine: isChecked ? 'line-through' : 'none',
+    textDecorationLine: prayer.checked ? 'line-through' : 'none',
   }]);
 
+  function onCheck() {
+    dispatch(prayersActions.updatePrayerRequest({
+      id: prayer.id,
+      title: prayer.title,
+      description: prayer.description,
+      checked: !prayer.checked,
+    }));
+  }
+
   return (
-    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('PrayerDetails', { prayer })}>
-      <View style={styles.indicator} />
+    <TouchableHighlight onPress={() => navigation.navigate('PrayerDetails', { prayer })}>
+      <View style={styles.item}>
+        <View style={styles.indicator} />
 
-      <TouchableOpacity style={styles.checkbox} onPress={() => setIsChecked(!isChecked)}>
-        <View style={styles.checkboxBox}>
-          {isChecked && <CheckSvg />}
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.checkbox} onPress={onCheck}>
+          <View style={styles.checkboxBox}>
+            {prayer.checked && <CheckSvg />}
+          </View>
+        </TouchableOpacity>
 
-      <Text
-        numberOfLines={1}
-        style={titleStyle}
-      >{prayer.title}</Text>
+        <Text
+          numberOfLines={1}
+          style={titleStyle}
+        >{prayer.title}</Text>
 
-      <TouchableOpacity style={styles.btn} onPress={() => setMembersCount(membersCount + 1)}>
-        <UserSvg />
-        <Text style={styles.btnText}>{membersCount}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => setMembersCount(membersCount + 1)}>
+          <UserSvg />
+          <Text style={styles.btnText}>{membersCount}</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btn} onPress={() => setPraysCount(praysCount + 1)}>
-        <PrayHandsSvg />
-        <Text style={styles.btnText}>{praysCount}</Text>
-      </TouchableOpacity>
-    </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => setPraysCount(praysCount + 1)}>
+          <PrayHandsSvg />
+          <Text style={styles.btnText}>{praysCount}</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableHighlight>
   );
 };
 
 const styles = StyleSheet.create({
   item: {
+    paddingHorizontal: 15,
     height: 68,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomColor: '#E5E5E5',
     borderBottomWidth: 1,
+    backgroundColor: '#FFFFFF',
   },
   indicator: {
     width: 3,

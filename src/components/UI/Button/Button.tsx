@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({ text, customStyle, customTextStyle, onP
   const textStyle = [styles.btnText, customTextStyle];
 
   return (
-    <TouchableOpacity style={style} onPress={onPress}>
+    <TouchableOpacity activeOpacity={0.5} style={style} onPress={onPress}>
       <Text style={textStyle}>{text}</Text>
     </TouchableOpacity>
   );

@@ -16,7 +16,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppNavParamsList } from '../../navigation/types';
 import { Header, CommentItem } from '../../components';
 import { PrayHandsSvg, PlusLgSvg, CommentIconSvg } from '../../components/svg';
-import { IComment, IPrayer } from '../../interfaces';
+import { IComment } from '../../interfaces';
 
 interface PrayerDetailsProps {
   navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayerDetails'>;
@@ -60,14 +60,8 @@ const commentsArr: IComment[] = [
   },
 ];
 
-const HeaderComponent: React.FC<{ prayer: IPrayer }> = ({ prayer }) => (
+const HeaderComponent: React.FC = () => (
   <>
-    <View style={styles.titleWrapper}>
-      <Text style={styles.title}>
-        {prayer.title}
-      </Text>
-    </View>
-
     <View style={styles.lastPrayed}>
       <View style={styles.lastPrayedIndicator} />
       <Text style={styles.lastPrayedTitle}>
@@ -147,8 +141,11 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
           backBtnColor="#FFFFFF"
           rightBtnIcon={<PrayHandsSvg color="#FFFFFF" />}
         />
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title}>{prayer.title}</Text>
+        </View>
         <SectionList
-          ListHeaderComponent={<HeaderComponent prayer={prayer} />}
+          ListHeaderComponent={<HeaderComponent />}
           sections={[
             { title: 'Comments', data: commentsArr, renderItem: ({ item }) => <CommentItem comment={item} /> },
           ]}
