@@ -9,13 +9,6 @@ export interface CreatePrayerRequestPayload {
   columnId: number;
 }
 
-export interface UpdatePrayerRequestPayload {
-  id: number;
-  title: string;
-  description: string;
-  checked: boolean;
-}
-
 interface PrayersState {
   items: IPrayer[],
   isLoading: boolean,
@@ -38,12 +31,15 @@ const prayersSlice = createSlice({
     },
     addPrayer: (state, action: PayloadAction<IPrayer>) => {
       state.items.push(action.payload);
+      state.isLoading = false;
     },
     deletePrayerById: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter(prayer => prayer.id !== action.payload);
+      state.error = '';
     },
     updatePrayer: (state, action: PayloadAction<IPrayer>) => {
       state.items = state.items.map(prayer => (prayer.id === action.payload.id) ? action.payload : prayer);
+      state.error = '';
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
@@ -54,12 +50,7 @@ const prayersSlice = createSlice({
       state.error = '';
     },
     createPrayerRequest: (state, _action: PayloadAction<CreatePrayerRequestPayload>) => {
-      state.error = '';
-    },
-    deletePrayerRequset: (state, _action: PayloadAction<number>) => {
-      state.error = '';
-    },
-    updatePrayerRequest: (state, _action: PayloadAction<UpdatePrayerRequestPayload>) => {
+      state.isLoading = true;
       state.error = '';
     },
   },

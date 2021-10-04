@@ -24,10 +24,8 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ prayer }) => {
   }]);
 
   function onCheck() {
-    dispatch(prayersActions.updatePrayerRequest({
-      id: prayer.id,
-      title: prayer.title,
-      description: prayer.description,
+    dispatch(prayersActions.updatePrayer({
+      ...prayer,
       checked: !prayer.checked,
     }));
   }

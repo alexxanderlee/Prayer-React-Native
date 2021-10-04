@@ -60,7 +60,7 @@ const Desk: React.FC = () => {
           currentColumn={currentColumn!}
           setCurrentColumn={setCurrentColumn}
           setModalVisible={setModalMenuVisible}
-          onDelete={(id) => dispatch(columnsActions.deleteColumnRequest(id))}
+          onDelete={(id) => dispatch(columnsActions.deleteColumnById(id))}
           onEdit={() => setModalInputVisible(true)}
         />
       </ModalWindow>

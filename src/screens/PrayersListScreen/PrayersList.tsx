@@ -31,7 +31,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ columnId }) => {
 
   const [answeredVisible, setAnsweredVisible] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<string>('');
-  const [curPrayerIitem, setCurPrayerItem] = React.useState<IPrayer | null>(null);
+  const [curPrayerItem, setCurPrayerItem] = React.useState<IPrayer | null>(null);
 
   React.useEffect(() => {
     dispatch(prayersActions.getAllPrayersRequest());
@@ -45,15 +45,13 @@ const PrayersList: React.FC<PrayersListProps> = ({ columnId }) => {
     if (!inputValue.trim()) {
       return;
     }
-    if (curPrayerIitem) {
-      if (curPrayerIitem.title === inputValue) {
+    if (curPrayerItem) {
+      if (curPrayerItem.title === inputValue) {
         return;
       }
-      dispatch(prayersActions.updatePrayerRequest({
-        id: curPrayerIitem.id,
+      dispatch(prayersActions.updatePrayer({
+        ...curPrayerItem,
         title: inputValue,
-        description: curPrayerIitem.description,
-        checked: curPrayerIitem.checked,
       }));
       setCurPrayerItem(null);
     } else {
@@ -114,7 +112,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ columnId }) => {
         style={[hiddenItemStyles.btn, hiddenItemStyles.redBg]}
         onPress={() => {
           closeRow(rowMap, `${data.item.id}`);
-          dispatch(prayersActions.deletePrayerRequset(data.item.id));
+          dispatch(prayersActions.deletePrayerById(data.item.id));
         }}
       >
         <Text style={hiddenItemStyles.btnText}>Delete</Text>

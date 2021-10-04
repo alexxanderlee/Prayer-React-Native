@@ -23,14 +23,13 @@ const ModalInput: React.FC<ModalInputProps> = ({ currentColumn, setCurrentColumn
   const [value, setValue] = React.useState<string>(currentColumn ? currentColumn.title : '');
 
   function createNewColumn(title: string) {
-    dispatch(columnsActions.createCololumnRequset({ title, description: '' }));
+    dispatch(columnsActions.createColumnRequset({ title, description: '' }));
   }
 
   function editColumn(title: string) {
-    dispatch(columnsActions.updateColumnRequest({
+    dispatch(columnsActions.updateColumn({
+      ...currentColumn!,
       title,
-      description: currentColumn!.description,
-      columnId: currentColumn!.id,
     }));
   }
 

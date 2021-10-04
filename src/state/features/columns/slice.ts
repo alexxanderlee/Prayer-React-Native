@@ -6,12 +6,6 @@ export interface CreateColumnPayload {
   description: string;
 }
 
-export interface UpdateColumnPayload {
-  title: string;
-  description: string;
-  columnId: number;
-}
-
 interface ColumnsState {
   items: IColumn[];
   isLoading: boolean;
@@ -41,9 +35,7 @@ const columnsSlice = createSlice({
       state.isLoading = false;
     },
     updateColumn: (state, action: PayloadAction<IColumn>) => {
-      state.items = state.items.map(column => {
-        return (column.id === action.payload.id) ? action.payload : column;
-      });
+      state.items = state.items.map(column => (column.id === action.payload.id) ? action.payload : column);
       state.isLoading = false;
     },
     setError: (state, action: PayloadAction<string>) => {
@@ -54,15 +46,7 @@ const columnsSlice = createSlice({
       state.isLoading = true;
       state.error = '';
     },
-    createCololumnRequset: (state, _action: PayloadAction<CreateColumnPayload>) => {
-      state.isLoading = true;
-      state.error = '';
-    },
-    updateColumnRequest: (state, _action: PayloadAction<UpdateColumnPayload>) => {
-      state.isLoading = true;
-      state.error = '';
-    },
-    deleteColumnRequest: (state, _action: PayloadAction<number>) => {
+    createColumnRequset: (state, _action: PayloadAction<CreateColumnPayload>) => {
       state.isLoading = true;
       state.error = '';
     },
