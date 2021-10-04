@@ -24,15 +24,12 @@ const commentsSlice = createSlice({
     },
     addComment: (state, action: PayloadAction<IComment>) => {
       state.items.push(action.payload);
-      state.isLoading = false;
     },
     deleteCommentById: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter(comment => (comment.id !== action.payload));
-      state.isLoading = false;
     },
     updateComment: (state, action: PayloadAction<IComment>) => {
       state.items = state.items.map(comment => (comment.id === action.payload.id) ? action.payload : comment);
-      state.isLoading = false;
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
@@ -43,15 +40,12 @@ const commentsSlice = createSlice({
       state.error = '';
     },
     createCommentRequest: (state, _action: PayloadAction<{ body: string, prayerId: number }>) => {
-      state.isLoading = true;
       state.error = '';
     },
     deleteCommentRequest: (state, _action: PayloadAction<number>) => {
-      state.isLoading = true;
       state.error = '';
     },
     updateCommentRequest: (state, _action: PayloadAction<{ body: string, commentId: number }>) => {
-      state.isLoading = true;
       state.error = '';
     },
   },

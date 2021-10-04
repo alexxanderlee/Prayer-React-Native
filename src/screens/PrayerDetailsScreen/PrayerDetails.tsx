@@ -14,7 +14,6 @@ import {
   RefreshControl,
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppNavParamsList } from '../../navigation/types';
 import { Header, CommentItem } from '../../components';
 import { PrayHandsSvg, PlusLgSvg, CommentIconSvg } from '../../components/svg';
@@ -25,7 +24,6 @@ import { commentsActions, commentsSelectors } from '../../state/features/comment
 import { userSelectors } from '../../state/features/user';
 
 interface PrayerDetailsProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayerDetails'>;
   route: RouteProp<AppNavParamsList, 'PrayerDetails'>;
 }
 
@@ -44,7 +42,7 @@ const members = [
   },
 ];
 
-const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation, route }) => {
+const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ route }) => {
   const { prayer } = route.params;
   const dispatch = useAppDispatch();
 
@@ -124,12 +122,9 @@ const PrayerDetails: React.FunctionComponent<PrayerDetailsProps> = ({ navigation
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Header
-          navigation={navigation}
           isBackBtnVisible={true}
-          backgroundColor="#BFB393"
-          borderShown={false}
-          backBtnColor="#FFFFFF"
           rightBtnIcon={<PrayHandsSvg color="#FFFFFF" />}
+          variant="golden"
         />
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{prayer.title}</Text>

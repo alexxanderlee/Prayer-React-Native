@@ -9,22 +9,19 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PrayerItem } from '../../components';
 import { PlusLgSvg } from '../../components/svg';
 import { Button, ErrorMessage, MessageBox } from '../../components/UI';
-import { AppNavParamsList } from '../../navigation/types';
 import { IPrayer } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { prayersSelectors, prayersActions } from '../../state/features/prayers';
 import { SwipeListView, RowMap } from 'react-native-swipe-list-view';
 
 interface PrayersListProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
   columnId: number;
 }
 
-const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
+const PrayersList: React.FC<PrayersListProps> = ({ columnId }) => {
   const inputRef = React.useRef<TextInput>(null);
   const dispatch = useAppDispatch();
   const checkedPrayers: IPrayer[] = useAppSelector(state => prayersSelectors.getCheckedPrayersByColumnId(state, columnId));
@@ -130,7 +127,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
       useFlatList={true}
       data={checkedPrayers}
       keyExtractor={item => `${item.id}`}
-      renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      renderItem={({ item }) => <PrayerItem prayer={item} />}
       ListEmptyComponent={<MessageBox text="There are no answered prayers" />}
       renderHiddenItem={HiddenItem}
       disableRightSwipe
@@ -172,7 +169,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
       refreshing={isLoading}
       onRefresh={onRefresh}
       keyboardShouldPersistTaps="handled"
-      renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      renderItem={({ item }) => <PrayerItem prayer={item} />}
       renderHiddenItem={HiddenItem}
       disableRightSwipe
       rightOpenValue={-140}
