@@ -9,22 +9,19 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PrayerItem } from '../../components';
 import { PlusLgSvg } from '../../components/svg';
-import { Button, ErrorMessage } from '../../components/UI';
-import { AppNavParamsList } from '../../navigation/types';
+import { Button, ErrorMessage, MessageBox } from '../../components/UI';
 import { IPrayer } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { prayersSelectors, prayersActions } from '../../state/features/prayers';
 import { SwipeListView, RowMap } from 'react-native-swipe-list-view';
 
 interface PrayersListProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
   columnId: number;
 }
 
-const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
+const PrayersList: React.FC<PrayersListProps> = ({ columnId }) => {
   const inputRef = React.useRef<TextInput>(null);
   const dispatch = useAppDispatch();
   const checkedPrayers: IPrayer[] = useAppSelector(state => prayersSelectors.getCheckedPrayersByColumnId(state, columnId));
@@ -34,7 +31,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
 
   const [answeredVisible, setAnsweredVisible] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<string>('');
-  const [curPrayerIitem, setCurPrayerItem] = React.useState<IPrayer | null>(null);
+  const [curPrayerItem, setCurPrayerItem] = React.useState<IPrayer | null>(null);
 
   React.useEffect(() => {
     dispatch(prayersActions.getAllPrayersRequest());
@@ -48,15 +45,13 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
     if (!inputValue.trim()) {
       return;
     }
-    if (curPrayerIitem) {
-      if (curPrayerIitem.title === inputValue) {
+    if (curPrayerItem) {
+      if (curPrayerItem.title === inputValue) {
         return;
       }
-      dispatch(prayersActions.updatePrayerRequest({
-        id: curPrayerIitem.id,
+      dispatch(prayersActions.updatePrayer({
+        ...curPrayerItem,
         title: inputValue,
-        description: curPrayerIitem.description,
-        checked: curPrayerIitem.checked,
       }));
       setCurPrayerItem(null);
     } else {
@@ -68,10 +63,6 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
       }));
     }
     setInputValue('');
-  }
-
-  function onChangeInput(value: string) {
-    setInputValue(value);
   }
 
   function closeRow(rowMap: RowMap<IPrayer>, rowKey: string) {
@@ -93,7 +84,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
         placeholderTextColor="#9C9C9C"
         style={styles.input}
         value={inputValue}
-        onChangeText={onChangeInput}
+        onChangeText={setInputValue}
         onSubmitEditing={handleSubmit}
         ref={inputRef}
         onBlur={() => {
@@ -121,7 +112,7 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
         style={[hiddenItemStyles.btn, hiddenItemStyles.redBg]}
         onPress={() => {
           closeRow(rowMap, `${data.item.id}`);
-          dispatch(prayersActions.deletePrayerRequset(data.item.id));
+          dispatch(prayersActions.deletePrayerById(data.item.id));
         }}
       >
         <Text style={hiddenItemStyles.btnText}>Delete</Text>
@@ -134,7 +125,8 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
       useFlatList={true}
       data={checkedPrayers}
       keyExtractor={item => `${item.id}`}
-      renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      renderItem={({ item }) => <PrayerItem prayer={item} />}
+      ListEmptyComponent={<MessageBox text="There are no answered prayers" />}
       renderHiddenItem={HiddenItem}
       disableRightSwipe
       rightOpenValue={-140}
@@ -175,10 +167,11 @@ const PrayersList: React.FC<PrayersListProps> = ({ navigation, columnId }) => {
       refreshing={isLoading}
       onRefresh={onRefresh}
       keyboardShouldPersistTaps="handled"
-      renderItem={({ item }) => <PrayerItem navigation={navigation} prayer={item} />}
+      renderItem={({ item }) => <PrayerItem prayer={item} />}
       renderHiddenItem={HiddenItem}
       disableRightSwipe
       rightOpenValue={-140}
+      ListEmptyComponent={<MessageBox text="There are no prayers" />}
       ListHeaderComponent={InputComponent}
       ListFooterComponent={FooterComponent}
     />
@@ -215,6 +208,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 15,
+    backgroundColor: '#FFFFFF',
   },
   inputWrapper: {
     margin: 15,

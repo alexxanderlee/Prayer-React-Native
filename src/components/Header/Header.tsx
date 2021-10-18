@@ -1,34 +1,43 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackArrowSvg } from '../svg';
 import { AppNavParamsList } from '../../navigation/types';
 
 interface HeaderProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk' | 'PrayersList' | 'PrayerDetails'>;
   title?: string;
   rightBtnIcon?: React.ReactNode;
   onRightBtnPress?: () => void;
   isBackBtnVisible?: boolean;
-  backBtnColor?: string;
-  backgroundColor?: string;
-  borderShown?: boolean;
+  variant?: 'default' | 'borderNone' | 'golden';
 }
 
 const Header: React.FC<HeaderProps> = ({
-  navigation,
   title,
   rightBtnIcon,
   onRightBtnPress,
   isBackBtnVisible = false,
-  backBtnColor,
-  backgroundColor = '#FFFFFF',
-  borderShown = true,
+  variant = 'default',
 }) => {
-  const headerContainerStyle = [styles.headerContainer, {
-    borderBottomWidth: borderShown ? 1 : 0,
-    backgroundColor,
-  }];
+  const navigation = useNavigation<NativeStackNavigationProp<AppNavParamsList, 'Desk' | 'PrayersList' | 'PrayerDetails'>>();
+
+  let headerContainerStyle, backBtnColor;
+  if (variant === 'default') {
+    headerContainerStyle = styles.headerContainer;
+  }
+  if (variant === 'borderNone') {
+    headerContainerStyle = [styles.headerContainer, {
+      borderBottomWidth: 0,
+    }];
+  }
+  if (variant === 'golden') {
+    headerContainerStyle = [styles.headerContainer, {
+      borderBottomWidth: 0,
+      backgroundColor: '#BFB393',
+    }];
+    backBtnColor = '#FFFFFF';
+  }
 
   return (
     <View style={headerContainerStyle}>

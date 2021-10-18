@@ -1,16 +1,18 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { IColumn } from '../../interfaces';
 import { AppNavParamsList } from '../../navigation/types';
 
 interface ColumnItemProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk'>;
   column: IColumn;
   onLongPress: () => void;
 }
 
-const ColumnItem: React.FC<ColumnItemProps> = ({ navigation, column, onLongPress }) => {
+const ColumnItem: React.FC<ColumnItemProps> = ({ column, onLongPress }) => {
+  const navigation = useNavigation<NativeStackNavigationProp<AppNavParamsList, 'Desk'>>();
+
   return (
     <TouchableOpacity
       style={styles.card}

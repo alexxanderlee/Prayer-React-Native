@@ -1,8 +1,9 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { columnsActions, CreateColumnPayload, UpdateColumnPayload } from './slice';
+import { columnsActions, CreateColumnPayload } from './slice';
 import { columnsApi } from '../../../utils/api';
+import { IColumn } from '../../../interfaces';
 
 function* getAllColsWorker() {
   const response: AxiosResponse = yield call(columnsApi.getAllColumns);
@@ -14,15 +15,13 @@ function* createColWorker(action: PayloadAction<CreateColumnPayload>) {
   yield put(columnsActions.addColumn(response.data));
 }
 
-function* updateColWorker(action: PayloadAction<UpdateColumnPayload>) {
-  const { title, description, columnId } = action.payload;
-  const response: AxiosResponse = yield call(columnsApi.updateColumnById, { title, description }, columnId );
-  yield put(columnsActions.updateColumn(response.data));
+function* updateColWorker(action: PayloadAction<IColumn>) {
+  const { title, description, id } = action.payload;
+  yield call(columnsApi.updateColumnById, { title, description }, id );
 }
 
 function* deleteColWorker(action: PayloadAction<number>) {
   yield call(columnsApi.deleteColumnById, action.payload);
-  yield put(columnsActions.deleteColumnById(action.payload));
 }
 
 function* onError(error: AxiosError) {
@@ -46,7 +45,7 @@ const sagaWrapper = (
 
 export default function* () {
   yield takeEvery(columnsActions.getAllColumnsRequest, sagaWrapper(onError, getAllColsWorker));
-  yield takeEvery(columnsActions.createCololumnRequset, sagaWrapper(onError, createColWorker));
-  yield takeEvery(columnsActions.updateColumnRequest, sagaWrapper(onError, updateColWorker));
-  yield takeEvery(columnsActions.deleteColumnRequest, sagaWrapper(onError, deleteColWorker));
+  yield takeEvery(columnsActions.createColumnRequset, sagaWrapper(onError, createColWorker));
+  yield takeEvery(columnsActions.updateColumn, sagaWrapper(onError, updateColWorker));
+  yield takeEvery(columnsActions.deleteColumnById, sagaWrapper(onError, deleteColWorker));
 }

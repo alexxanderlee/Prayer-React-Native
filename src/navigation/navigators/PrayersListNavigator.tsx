@@ -1,7 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, Platform, StatusBar } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { AppNavParamsList, PrayersListNavParamsList } from '../types';
 import { PrayersListScreen, SubPrayersListScreen } from '../../screens';
@@ -10,13 +9,12 @@ import { SettingsSvg } from '../../components/svg';
 import { UserModal } from '../../components/modals';
 
 interface Props {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
   route: RouteProp<AppNavParamsList, 'PrayersList'>;
 }
 
 const Tab = createMaterialTopTabNavigator<PrayersListNavParamsList>();
 
-const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
+const PrayersListNavigator: React.FC<Props> = ({ route }) => {
   const { column } = route.params;
   const [userModalVisible, setUserModalVisible] = React.useState<boolean>(false);
 
@@ -27,12 +25,11 @@ const PrayersListNavigator: React.FC<Props> = ({ navigation, route }) => {
       </ModalWindow>
 
       <Header
-        navigation={navigation}
         title={column.title}
         isBackBtnVisible={true}
         rightBtnIcon={<SettingsSvg />}
         onRightBtnPress={() => setUserModalVisible(true)}
-        borderShown={false}
+        variant="borderNone"
       />
 
       <Tab.Navigator

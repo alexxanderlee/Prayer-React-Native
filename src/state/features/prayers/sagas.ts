@@ -3,7 +3,8 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { prayersActions } from '../prayers';
 import { AxiosResponse, AxiosError } from 'axios';
 import { prayersApi } from '../../../utils/api';
-import { CreatePrayerRequestPayload, UpdatePrayerRequestPayload } from './slice';
+import { CreatePrayerRequestPayload } from './slice';
+import { IPrayer } from '../../../interfaces';
 
 function* getAllPrayersWorker() {
   const response: AxiosResponse = yield call(prayersApi.getAllPrayers);
@@ -18,13 +19,11 @@ function* createPrayerWorker(action: PayloadAction<CreatePrayerRequestPayload>) 
 
 function* deletePrayerWorker(action: PayloadAction<number>) {
   yield call(prayersApi.deletePrayerById, action.payload);
-  yield put(prayersActions.deletePrayerById(action.payload));
 }
 
-function * updatePrayerWorker(action: PayloadAction<UpdatePrayerRequestPayload>) {
+function* updatePrayerWorker(action: PayloadAction<IPrayer>) {
   const { id, title, description, checked } = action.payload;
-  const response: AxiosResponse = yield call(prayersApi.updatePrayerById, { title, description, checked }, id);
-  yield put(prayersActions.updatePrayer(response.data));
+  yield call(prayersApi.updatePrayerById, { title, description, checked }, id);
 }
 
 function* onError(error: AxiosError) {
@@ -49,6 +48,6 @@ const sagaWrapper = (
 export default function* () {
   yield takeEvery(prayersActions.getAllPrayersRequest, sagaWrapper(onError, getAllPrayersWorker));
   yield takeEvery(prayersActions.createPrayerRequest, sagaWrapper(onError, createPrayerWorker));
-  yield takeEvery(prayersActions.deletePrayerRequset, sagaWrapper(onError, deletePrayerWorker));
-  yield takeEvery(prayersActions.updatePrayerRequest, sagaWrapper(onError, updatePrayerWorker));
+  yield takeEvery(prayersActions.deletePrayerById, sagaWrapper(onError, deletePrayerWorker));
+  yield takeEvery(prayersActions.updatePrayer, sagaWrapper(onError, updatePrayerWorker));
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, TextStyle, TouchableHighlight } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { IPrayer } from '../../interfaces';
 import { PrayHandsSvg, UserSvg, CheckSvg } from '../svg';
@@ -8,12 +9,12 @@ import { useAppDispatch } from '../../state/hooks';
 import { prayersActions } from '../../state/features/prayers';
 
 interface PrayerItemProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>;
   prayer: IPrayer;
 }
 
-const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
+const PrayerItem: React.FC<PrayerItemProps> = ({ prayer }) => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<NativeStackNavigationProp<AppNavParamsList, 'PrayersList'>>();
 
   const [membersCount, setMembersCount] = React.useState<number>(0);
   const [praysCount, setPraysCount] = React.useState<number>(0);
@@ -23,10 +24,8 @@ const PrayerItem: React.FC<PrayerItemProps> = ({ navigation, prayer }) => {
   }]);
 
   function onCheck() {
-    dispatch(prayersActions.updatePrayerRequest({
-      id: prayer.id,
-      title: prayer.title,
-      description: prayer.description,
+    dispatch(prayersActions.updatePrayer({
+      ...prayer,
       checked: !prayer.checked,
     }));
   }

@@ -8,21 +8,16 @@ import {
   Platform,
   RefreshControl,
 } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ColumnItem, Header, ModalWindow } from '../../components';
-import { ErrorMessage } from '../../components/UI';
+import { ErrorMessage, MessageBox } from '../../components/UI';
 import { ModalInput, ContextMenu } from '../../components/modals';
 import { PlusSvg } from '../../components/svg';
-import { AppNavParamsList } from '../../navigation/types';
 import { useAppSelector, useAppDispatch } from '../../state/hooks';
 import { columnsSelectors, columnsActions } from '../../state/features/columns';
 import { IColumn } from '../../interfaces';
 
-interface DeskProps {
-  navigation: NativeStackNavigationProp<AppNavParamsList, 'Desk'>;
-}
 
-const Desk: React.FC<DeskProps> = ({ navigation }) => {
+const Desk: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const columns = useAppSelector(columnsSelectors.getColumns);
@@ -65,14 +60,13 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
           currentColumn={currentColumn!}
           setCurrentColumn={setCurrentColumn}
           setModalVisible={setModalMenuVisible}
-          onDelete={(id) => dispatch(columnsActions.deleteColumnRequest(id))}
+          onDelete={(id) => dispatch(columnsActions.deleteColumnById(id))}
           onEdit={() => setModalInputVisible(true)}
         />
       </ModalWindow>
 
       <Header
         title="My Desk"
-        navigation={navigation}
         rightBtnIcon={<PlusSvg/>}
         onRightBtnPress={() => setModalInputVisible(true)}
       />
@@ -89,7 +83,6 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
             renderItem={({ item }) => (
               <ColumnItem
                 column={item}
-                navigation={navigation}
                 onLongPress={() => {
                   setCurrentColumn(item);
                   setModalMenuVisible(true);
@@ -99,6 +92,7 @@ const Desk: React.FC<DeskProps> = ({ navigation }) => {
             keyExtractor={item => item.id.toString()}
             refreshing={isLoading}
             onRefresh={onRefresh}
+            ListEmptyComponent={MessageBox}
           />}
     </SafeAreaView>
   );
